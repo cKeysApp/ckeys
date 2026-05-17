@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CKEYS — Malaysia's Complete Rental Platform</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0c0c0c;--bg2:#141414;--bg3:#1a1a1a;--bg4:#222;--bg5:#272727;
+  --white:#f5f5f5;--gray:#909090;--gray2:#555;--gray3:#2e2e2e;
+  --border:#2a2a2a;--border2:#383838;
+  --accent:#e8e8e8;--key:#d4d4d4;
+  --green:#4ade80;--red:#f87171;--amber:#fbbf24;--blue:#60a5fa;
+  --prop:#a78bfa;--veh:#38bdf8;--tool:#fb923c;--svc:#34d399;
+}
+body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;overflow-x:hidden;}
+h1,h2,h3,h4{font-family:'DM Sans',sans-serif;font-weight:600;}
+.mono{font-family:'DM Mono',monospace;}
+a{text-decoration:none;color:inherit;}
+button{font-family:'DM Sans',sans-serif;}
+
+/* ===== TOPBAR ===== */
+.topbar{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;gap:20px;height:60px;position:sticky;top:0;z-index:500;}
+.ham{display:flex;flex-direction:column;gap:5px;cursor:pointer;padding:6px 4px;}
+.ham span{display:block;width:20px;height:1.5px;background:var(--gray);transition:.25s;}
+.ckeys-logo{font-family:'DM Mono',monospace;font-size:22px;font-weight:500;color:var(--white);letter-spacing:-1px;cursor:pointer;}
+.ckeys-logo span{color:var(--gray2);}
+.topbar-spacer{flex:1;}
+.topbar-nav{display:flex;gap:6px;}
+.topbar-nav a{font-size:13px;color:var(--gray);padding:6px 12px;border-radius:6px;transition:color .2s,background .2s;cursor:pointer;}
+.topbar-nav a:hover{color:var(--white);background:var(--bg3);}
+.topbar-nav a.active{color:var(--white);}
+.topbar-actions{display:flex;gap:10px;align-items:center;}
+.t-btn{padding:8px 18px;font-size:13px;font-weight:500;cursor:pointer;border:none;transition:.2s;border-radius:6px;}
+.t-ghost{background:transparent;color:var(--gray);border:1px solid var(--border2);}
+.t-ghost:hover{background:var(--bg3);color:var(--white);}
+.t-solid{background:var(--white);color:#000;}
+.t-solid:hover{background:var(--accent);}
+
+/* ===== SIDEBAR ===== */
+.sidebar-wrap{position:fixed;inset:0;z-index:900;display:none;}
+.sidebar-wrap.on{display:flex;}
+.sidebar-scrim{position:absolute;inset:0;background:rgba(0,0,0,.7);}
+.sidebar{position:absolute;left:0;top:0;bottom:0;width:270px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;animation:slideIn .25s ease;}
+@keyframes slideIn{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+.sb-head{padding:18px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.sb-close{background:none;border:1px solid var(--border2);color:var(--gray);width:30px;height:30px;border-radius:6px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;}
+.sb-label{padding:10px 24px 4px;font-size:11px;color:var(--gray2);text-transform:uppercase;letter-spacing:1.5px;}
+.sb-link{display:flex;align-items:center;gap:12px;padding:12px 24px;font-size:14px;color:var(--gray);cursor:pointer;transition:.15s;border-left:2px solid transparent;}
+.sb-link:hover,.sb-link.active{color:var(--white);background:var(--bg3);border-left-color:var(--gray);}
+.sb-link i{font-size:18px;}
+.sb-user{margin-top:auto;padding:20px 24px;border-top:1px solid var(--border);}
+.sb-user-card{background:var(--bg3);border-radius:8px;padding:14px;display:flex;align-items:center;gap:12px;}
+.sb-avatar{width:36px;height:36px;background:var(--gray3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--white);}
+
+/* ===== PAGES ===== */
+.page{display:none;}
+.page.active{display:block;}
+
+/* ===== HERO ===== */
+.hero{min-height:88vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 24px;position:relative;overflow:hidden;}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:50px 50px;opacity:.15;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:100px;padding:6px 16px;font-size:12px;color:var(--gray);margin-bottom:32px;}
+.hero-badge-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero-h1{font-size:clamp(42px,7vw,84px);font-weight:700;line-height:1.05;letter-spacing:-3px;margin-bottom:24px;color:var(--white);}
+.hero-h1 .dim{color:var(--gray2);}
+.hero-sub{font-size:17px;color:var(--gray);max-width:520px;line-height:1.8;margin:0 auto 48px;}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:64px;}
+.hero-btn-main{padding:16px 36px;background:var(--white);color:#000;font-size:15px;font-weight:600;border:none;border-radius:8px;cursor:pointer;transition:.2s;}
+.hero-btn-main:hover{background:var(--accent);transform:translateY(-1px);}
+.hero-btn-sec{padding:16px 36px;background:transparent;color:var(--white);font-size:15px;font-weight:500;border:1px solid var(--border2);border-radius:8px;cursor:pointer;transition:.2s;}
+.hero-btn-sec:hover{background:var(--bg3);border-color:var(--gray);}
+.hero-stats{display:flex;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--bg2);}
+.hero-stat{padding:20px 36px;text-align:center;border-right:1px solid var(--border);}
+.hero-stat:last-child{border-right:none;}
+.hero-stat-num{font-size:26px;font-weight:700;color:var(--white);font-family:'DM Mono',monospace;}
+.hero-stat-lbl{font-size:12px;color:var(--gray);margin-top:2px;}
+
+/* ===== TICKER ===== */
+.ticker-wrap{background:var(--bg3);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:11px 0;overflow:hidden;white-space:nowrap;}
+.ticker-inner{display:inline-flex;animation:tick 30s linear infinite;}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.tick-item{padding:0 32px;font-size:12px;color:var(--gray);letter-spacing:1px;text-transform:uppercase;display:inline-flex;align-items:center;gap:10px;}
+.tick-dot{width:4px;height:4px;background:var(--gray2);border-radius:50%;}
+
+/* ===== CATEGORY GRID ===== */
+.section{padding:72px 40px;}
+.section-label{font-size:11px;letter-spacing:2px;color:var(--gray2);text-transform:uppercase;margin-bottom:12px;}
+.section-h2{font-size:clamp(28px,4vw,38px);font-weight:700;color:var(--white);letter-spacing:-1px;margin-bottom:48px;}
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);}
+.cat-card{background:var(--bg2);padding:32px 24px;cursor:pointer;transition:background .2s;position:relative;overflow:hidden;}
+.cat-card:hover{background:var(--bg3);}
+.cat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.cat-card.prop::before{background:var(--prop);}
+.cat-card.veh::before{background:var(--veh);}
+.cat-card.tool::before{background:var(--tool);}
+.cat-card.svc::before{background:var(--svc);}
+.cat-icon{font-size:32px;margin-bottom:20px;display:block;}
+.cat-card.prop .cat-icon{color:var(--prop);}
+.cat-card.veh .cat-icon{color:var(--veh);}
+.cat-card.tool .cat-icon{color:var(--tool);}
+.cat-card.svc .cat-icon{color:var(--svc);}
+.cat-name{font-size:16px;font-weight:600;color:var(--white);margin-bottom:6px;}
+.cat-count{font-size:12px;color:var(--gray);font-family:'DM Mono',monospace;}
+.cat-arrow{position:absolute;bottom:24px;right:24px;font-size:20px;color:var(--gray3);transition:.2s;}
+.cat-card:hover .cat-arrow{color:var(--gray);transform:translate(2px,-2px);}
+
+/* ===== BENEFITS ===== */
+.benefits-wrap{padding:72px 40px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:64px;}
+.ben-side-label{font-size:11px;letter-spacing:2px;color:var(--gray2);text-transform:uppercase;margin-bottom:12px;}
+.ben-side-h{font-size:24px;font-weight:700;color:var(--white);margin-bottom:32px;letter-spacing:-.5px;}
+.ben-items{display:flex;flex-direction:column;gap:16px;}
+.ben-item{display:flex;gap:16px;padding:20px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;transition:.2s;}
+.ben-item:hover{border-color:var(--border2);}
+.ben-icon{width:40px;height:40px;background:var(--bg3);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--gray);flex-shrink:0;}
+.ben-text h4{font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px;}
+.ben-text p{font-size:13px;color:var(--gray);line-height:1.6;}
+
+/* ===== HOW IT WORKS ===== */
+.steps-row{display:grid;grid-template-columns:repeat(5,1fr);gap:0;background:var(--border);margin-top:48px;}
+.step{background:var(--bg2);padding:28px 24px;}
+.step-num{font-family:'DM Mono',monospace;font-size:36px;font-weight:500;color:var(--bg4);margin-bottom:16px;}
+.step-title{font-size:14px;font-weight:600;color:var(--white);margin-bottom:8px;}
+.step-desc{font-size:13px;color:var(--gray);line-height:1.6;}
+
+/* ===== LISTING PAGES ===== */
+.listing-page-wrap{display:flex;flex-direction:column;}
+.listing-header{padding:28px 40px;border-bottom:1px solid var(--border);background:var(--bg2);display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+.listing-header-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;}
+.listing-header-icon.prop{background:#1e1730;color:var(--prop);}
+.listing-header-icon.veh{background:#0e1f2e;color:var(--veh);}
+.listing-header-icon.tool{background:#2e1a0a;color:var(--tool);}
+.listing-header-icon.svc{background:#0a1f16;color:var(--svc);}
+.listing-header-title{flex:1;}
+.listing-header-title h2{font-size:22px;font-weight:700;color:var(--white);letter-spacing:-.5px;}
+.listing-header-title p{font-size:13px;color:var(--gray);}
+.listing-header-actions{display:flex;gap:10px;}
+.listing-filters{padding:16px 40px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.filter-chip{padding:7px 16px;background:var(--bg3);border:1px solid var(--border2);color:var(--gray);border-radius:100px;font-size:13px;cursor:pointer;transition:.15s;}
+.filter-chip:hover,.filter-chip.on{background:var(--white);color:#000;border-color:var(--white);}
+.filter-search{flex:1;min-width:200px;padding:9px 14px;background:var(--bg3);border:1px solid var(--border2);color:var(--white);border-radius:8px;font-size:14px;outline:none;}
+.filter-search::placeholder{color:var(--gray2);}
+.listing-grid{padding:28px 40px;display:flex;flex-direction:column;gap:1px;background:var(--border);}
+.demand-section{padding:20px 40px;border-top:1px solid var(--border);background:var(--bg2);}
+.demand-section-title{font-size:13px;color:var(--gray);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.demand-cards-row{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;}
+.demand-cards-row::-webkit-scrollbar{height:4px;}
+.demand-cards-row::-webkit-scrollbar-thumb{background:var(--border2);}
+
+/* ===== LISTING CARD (with photo) ===== */
+.lcard{display:flex;background:var(--bg2);cursor:pointer;transition:background .15s;min-height:130px;}
+.lcard:hover{background:var(--bg3);}
+.lcard.selected{background:var(--bg3);border-left:3px solid var(--white);}
+.lcard-photo{width:160px;min-width:160px;background:var(--bg4);overflow:hidden;position:relative;}
+.lcard-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+.lcard-photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:32px;color:var(--border2);}
+.lcard-photo-badge{position:absolute;top:8px;left:8px;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;}
+.badge-prop{background:#1e1730;color:var(--prop);}
+.badge-veh{background:#0e1f2e;color:var(--veh);}
+.badge-tool{background:#2e1a0a;color:var(--tool);}
+.badge-svc{background:#0a1f16;color:var(--svc);}
+.lcard-body{flex:1;padding:18px 22px;display:flex;flex-direction:column;justify-content:space-between;}
+.lcard-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+.lcard-title{font-size:15px;font-weight:600;color:var(--white);margin-bottom:4px;}
+.lcard-sub{font-size:12px;color:var(--gray);}
+.lcard-price{font-family:'DM Mono',monospace;font-size:15px;font-weight:500;color:var(--white);white-space:nowrap;}
+.lcard-price-per{font-size:11px;color:var(--gray);font-family:'DM Sans',sans-serif;}
+.lcard-meta{display:flex;gap:14px;margin-top:10px;}
+.lcard-meta-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--gray);}
+.lcard-meta-item i{font-size:14px;}
+.lcard-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+.lcard-tag{padding:2px 8px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;font-size:11px;color:var(--gray);}
+.lcard-actions{display:flex;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
+.lcard-btn{padding:7px 18px;font-size:13px;font-weight:500;border-radius:6px;cursor:pointer;border:none;transition:.15s;}
+.lcard-btn-primary{background:var(--white);color:#000;}
+.lcard-btn-primary:hover{background:var(--accent);}
+.lcard-btn-ghost{background:transparent;color:var(--gray);border:1px solid var(--border2);}
+.lcard-btn-ghost:hover{background:var(--bg4);color:var(--white);}
+
+/* ===== SMALL DEMAND CARD ===== */
+.mini-demand{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px 16px;min-width:220px;max-width:240px;cursor:pointer;transition:.15s;flex-shrink:0;}
+.mini-demand:hover{border-color:var(--border2);}
+.mini-demand-name{font-size:13px;font-weight:600;color:var(--white);margin-bottom:2px;}
+.mini-demand-loc{font-size:11px;color:var(--gray);margin-bottom:8px;display:flex;align-items:center;gap:4px;}
+.mini-demand-budget{font-family:'DM Mono',monospace;font-size:13px;color:var(--white);}
+.mini-demand-tags{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap;}
+.mini-demand-tag{padding:2px 7px;background:var(--bg4);border-radius:4px;font-size:10px;color:var(--gray);}
+
+/* ===== DETAIL PAGE ===== */
+.detail-wrap{max-width:900px;margin:0 auto;padding:36px 40px;}
+.detail-back{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--gray);cursor:pointer;margin-bottom:24px;transition:color .15s;}
+.detail-back:hover{color:var(--white);}
+.detail-photos{display:grid;grid-template-columns:2fr 1fr;gap:4px;border-radius:12px;overflow:hidden;margin-bottom:28px;height:320px;}
+.detail-photo-main{background:var(--bg3);overflow:hidden;}
+.detail-photo-main img{width:100%;height:100%;object-fit:cover;}
+.detail-photos-side{display:flex;flex-direction:column;gap:4px;}
+.detail-photo-side{background:var(--bg4);flex:1;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--border2);font-size:28px;}
+.detail-photo-side img{width:100%;height:100%;object-fit:cover;}
+.detail-body{display:grid;grid-template-columns:1fr 320px;gap:28px;align-items:start;}
+.detail-info{}
+.detail-type-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:100px;font-size:12px;font-weight:600;margin-bottom:14px;}
+.badge-full-prop{background:#1e1730;color:var(--prop);}
+.badge-full-veh{background:#0e1f2e;color:var(--veh);}
+.badge-full-tool{background:#2e1a0a;color:var(--tool);}
+.badge-full-svc{background:#0a1f16;color:var(--svc);}
+.detail-title{font-size:26px;font-weight:700;color:var(--white);letter-spacing:-.5px;margin-bottom:8px;}
+.detail-location{font-size:14px;color:var(--gray);display:flex;align-items:center;gap:6px;margin-bottom:20px;}
+.detail-features{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
+.detail-feat{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center;}
+.detail-feat-val{font-size:16px;font-weight:600;color:var(--white);margin-bottom:3px;}
+.detail-feat-lbl{font-size:11px;color:var(--gray);}
+.detail-desc{font-size:14px;color:var(--gray);line-height:1.8;margin-bottom:24px;}
+.detail-tags-row{display:flex;gap:8px;flex-wrap:wrap;}
+.detail-tag{padding:5px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;font-size:12px;color:var(--gray);}
+.detail-sidebar{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:24px;position:sticky;top:80px;}
+.detail-price-main{font-family:'DM Mono',monospace;font-size:28px;font-weight:500;color:var(--white);margin-bottom:4px;}
+.detail-price-per{font-size:13px;color:var(--gray);margin-bottom:20px;}
+.detail-calc{margin-bottom:20px;}
+.detail-calc label{display:block;font-size:12px;color:var(--gray);margin-bottom:6px;}
+.detail-calc input,.detail-calc select{width:100%;padding:10px 14px;background:var(--bg3);border:1px solid var(--border2);color:var(--white);border-radius:8px;font-size:14px;outline:none;margin-bottom:10px;}
+.detail-calc select option{background:var(--bg3);}
+.detail-breakdown{background:var(--bg3);border-radius:8px;padding:14px;margin-bottom:16px;}
+.detail-bd-row{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid var(--border);}
+.detail-bd-row:last-child{border-bottom:none;font-weight:600;color:var(--white);font-size:14px;padding-top:8px;}
+.detail-bd-row span:first-child{color:var(--gray);}
+.detail-book-btn{width:100%;padding:14px;background:var(--white);color:#000;font-size:15px;font-weight:600;border:none;border-radius:8px;cursor:pointer;transition:.2s;margin-bottom:10px;}
+.detail-book-btn:hover{background:var(--accent);}
+.detail-contact-btn{width:100%;padding:12px;background:transparent;color:var(--gray);font-size:14px;font-weight:500;border:1px solid var(--border2);border-radius:8px;cursor:pointer;transition:.2s;}
+.detail-contact-btn:hover{background:var(--bg3);color:var(--white);}
+.detail-owner{display:flex;align-items:center;gap:12px;margin-top:20px;padding-top:20px;border-top:1px solid var(--border);}
+.owner-avatar{width:40px;height:40px;background:var(--bg4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--white);}
+.owner-name{font-size:14px;font-weight:600;color:var(--white);}
+.owner-sub{font-size:12px;color:var(--gray);}
+.verified-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--green);}
+
+/* ===== MAP PAGE ===== */
+.map-page{padding:0;}
+.map-controls{display:flex;gap:12px;padding:16px 32px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap;align-items:center;}
+.map-search-in{flex:1;min-width:200px;padding:9px 14px;background:var(--bg3);border:1px solid var(--border2);color:var(--white);border-radius:8px;font-size:14px;outline:none;}
+.map-search-in::placeholder{color:var(--gray2);}
+.map-body{display:grid;grid-template-columns:340px 1fr;height:calc(100vh - 117px);}
+.map-list{overflow-y:auto;border-right:1px solid var(--border);background:var(--bg2);}
+.map-list::-webkit-scrollbar{width:4px;}
+.map-list::-webkit-scrollbar-thumb{background:var(--border2);}
+.map-lcard{display:flex;gap:0;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;}
+.map-lcard:hover{background:var(--bg3);}
+.map-lcard.selected{background:var(--bg3);border-left:3px solid var(--white);}
+.map-lcard-photo{width:80px;min-width:80px;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--border2);overflow:hidden;}
+.map-lcard-photo img{width:100%;height:100%;object-fit:cover;}
+.map-lcard-body{padding:14px 16px;flex:1;}
+.map-lcard-title{font-size:13px;font-weight:600;color:var(--white);margin-bottom:3px;}
+.map-lcard-meta{font-size:11px;color:var(--gray);display:flex;gap:8px;align-items:center;margin-bottom:5px;}
+.map-lcard-price{font-family:'DM Mono',monospace;font-size:13px;color:var(--white);}
+.map-lcard-badge{padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600;}
+.map-canvas{background:var(--bg3);position:relative;overflow:hidden;}
+.map-svg-wrap{width:100%;height:100%;position:relative;}
+.pin{position:absolute;transform:translate(-50%,-100%);cursor:pointer;z-index:10;}
+.pin-dot{width:34px;height:34px;background:var(--white);border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;transition:.2s;border:2px solid var(--bg);}
+.pin-dot i{transform:rotate(45deg);font-size:13px;color:#000;}
+.pin.prop-pin .pin-dot{background:var(--prop);}
+.pin.veh-pin .pin-dot{background:var(--veh);}
+.pin.tool-pin .pin-dot{background:var(--tool);}
+.pin.svc-pin .pin-dot{background:var(--svc);}
+.pin:hover .pin-dot,.pin.active .pin-dot{transform:rotate(-45deg) scale(1.2);}
+.map-popup{position:absolute;background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:16px;width:230px;z-index:20;display:none;box-shadow:0 8px 24px rgba(0,0,0,.5);}
+.map-popup.show{display:block;}
+
+/* ===== DEMAND BOARD ===== */
+.demand-board{padding:32px 40px;}
+.board-controls{display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap;align-items:center;}
+.demand-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;}
+.demand-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:22px;cursor:pointer;transition:.2s;}
+.demand-card:hover{border-color:var(--border2);background:var(--bg3);}
+.dc-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+.dc-name{font-size:15px;font-weight:600;color:var(--white);}
+.dc-budget{font-family:'DM Mono',monospace;font-size:14px;color:var(--white);}
+.dc-sub{font-size:12px;color:var(--gray);margin-top:2px;}
+.dc-metas{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+.dc-meta{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--gray);}
+.dc-meta i{font-size:14px;}
+.dc-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.dc-tag{padding:3px 10px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;font-size:11px;color:var(--gray);}
+
+/* ===== REQUEST FORM ===== */
+.req-wrap{padding:36px 40px;max-width:760px;margin:0 auto;}
+.form-section-title{font-size:11px;letter-spacing:1.5px;color:var(--gray2);text-transform:uppercase;margin:28px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.form-grp{margin-bottom:18px;}
+.form-grp label{display:block;font-size:13px;color:var(--gray);margin-bottom:8px;font-weight:500;}
+.form-grp input,.form-grp select,.form-grp textarea{width:100%;padding:12px 16px;background:var(--bg3);border:1px solid var(--border2);color:var(--white);border-radius:8px;font-size:14px;outline:none;transition:.2s;}
+.form-grp input:focus,.form-grp select:focus,.form-grp textarea:focus{border-color:var(--gray);}
+.form-grp select option{background:var(--bg3);}
+.form-grp textarea{resize:vertical;min-height:90px;line-height:1.6;}
+.form-row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-hint{font-size:12px;color:var(--gray2);margin-top:6px;}
+.tag-select{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+.tag-btn{padding:7px 16px;background:var(--bg3);border:1px solid var(--border2);color:var(--gray);border-radius:6px;font-size:13px;cursor:pointer;transition:.2s;}
+.tag-btn:hover{border-color:var(--gray);}
+.tag-btn.on{background:var(--white);color:#000;border-color:var(--white);}
+.submit-row{display:flex;justify-content:flex-end;gap:12px;margin-top:32px;padding-top:24px;border-top:1px solid var(--border);}
+
+/* ===== PAYMENT ===== */
+.pay-wrap{padding:36px 40px;max-width:680px;margin:0 auto;}
+.pay-summary{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:24px;}
+.pay-summary h3{font-size:16px;font-weight:600;color:var(--white);margin-bottom:16px;}
+.pay-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;}
+.pay-row:last-child{border-bottom:none;font-weight:600;color:var(--white);font-size:16px;margin-top:4px;}
+.pay-row span:first-child{color:var(--gray);}
+.pay-methods{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;}
+.pay-method{background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:16px;cursor:pointer;transition:.2s;text-align:center;}
+.pay-method:hover,.pay-method.on{border-color:var(--white);}
+.pay-method i{font-size:28px;color:var(--gray);margin-bottom:8px;display:block;}
+.pay-method span{font-size:13px;color:var(--gray);}
+.pay-method.on i,.pay-method.on span{color:var(--white);}
+.fpx-banks{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px;}
+.bank-btn{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:12px;cursor:pointer;text-align:center;font-size:12px;color:var(--gray);transition:.2s;}
+.bank-btn:hover,.bank-btn.on{border-color:var(--white);color:var(--white);}
+.pay-status{text-align:center;padding:48px 24px;}
+.pay-status i{font-size:56px;margin-bottom:16px;display:block;}
+.pay-status h3{font-size:20px;font-weight:700;color:var(--white);margin-bottom:8px;}
+.pay-status p{font-size:14px;color:var(--gray);}
+
+/* ===== DASHBOARD ===== */
+.dash-wrap{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 60px);}
+.dash-nav{background:var(--bg2);border-right:1px solid var(--border);padding:20px 0;}
+.dash-nav-item{display:flex;align-items:center;gap:12px;padding:12px 20px;font-size:14px;color:var(--gray);cursor:pointer;transition:.15s;border-left:2px solid transparent;}
+.dash-nav-item:hover,.dash-nav-item.active{color:var(--white);background:var(--bg3);border-left-color:var(--white);}
+.dash-nav-item i{font-size:18px;}
+.dash-content{padding:32px 36px;overflow-y:auto;}
+.dash-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;}
+.dash-header h2{font-size:24px;font-weight:700;color:var(--white);}
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:32px;}
+.metric{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px;}
+.metric-val{font-family:'DM Mono',monospace;font-size:28px;font-weight:500;color:var(--white);}
+.metric-lbl{font-size:12px;color:var(--gray);margin-top:4px;}
+.metric-delta{font-size:12px;margin-top:8px;}
+.delta-up{color:var(--green);}
+.delta-dn{color:var(--red);}
+.dash-section-title{font-size:16px;font-weight:600;color:var(--white);margin-bottom:16px;}
+.ticket-table{width:100%;border-collapse:collapse;margin-bottom:32px;}
+.ticket-table th{text-align:left;padding:10px 16px;font-size:12px;color:var(--gray2);letter-spacing:.5px;border-bottom:1px solid var(--border);font-weight:500;}
+.ticket-table td{padding:14px 16px;font-size:13px;color:var(--gray);border-bottom:1px solid var(--border);}
+.ticket-table td:first-child{color:var(--white);font-weight:500;}
+.status-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:500;}
+.status-new{background:#1a2e1a;color:var(--green);border:1px solid #2d4d2d;}
+.status-matched{background:#1a1f2e;color:var(--blue);border:1px solid #2d3a4d;}
+.status-paid{background:#2e2a1a;color:var(--amber);border:1px solid #4d441a;}
+
+/* ===== AUTH ===== */
+.auth-wrap{min-height:80vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;}
+.auth-box{background:var(--bg2);border:1px solid var(--border);border-radius:16px;width:100%;max-width:440px;overflow:hidden;}
+.auth-tabs{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border);}
+.auth-tab{padding:18px;text-align:center;font-size:14px;font-weight:500;cursor:pointer;color:var(--gray);transition:.2s;background:transparent;border:none;border-bottom:2px solid transparent;}
+.auth-tab.active{color:var(--white);background:var(--bg3);border-bottom-color:var(--white);}
+.auth-body{padding:32px;}
+.auth-body h2{font-size:22px;font-weight:700;color:var(--white);margin-bottom:6px;}
+.auth-body p{font-size:14px;color:var(--gray);margin-bottom:28px;}
+.social-btn{width:100%;padding:13px;background:var(--bg3);border:1px solid var(--border2);color:var(--white);border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;}
+.social-btn:hover{background:var(--bg4);}
+.auth-divider{text-align:center;position:relative;margin:20px 0;}
+.auth-divider::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:var(--border);}
+.auth-divider span{position:relative;background:var(--bg2);padding:0 12px;font-size:13px;color:var(--gray2);}
+.full-btn{width:100%;padding:14px;font-size:15px;font-weight:600;border-radius:8px;cursor:pointer;border:none;transition:.2s;margin-top:4px;}
+.full-btn-white{background:var(--white);color:#000;}
+.full-btn-white:hover{background:var(--accent);}
+.full-btn-outline{background:transparent;color:var(--white);border:1px solid var(--border2);}
+.full-btn-outline:hover{background:var(--bg3);}
+
+/* ===== TOAST ===== */
+.toast-wrap{position:fixed;bottom:28px;right:28px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;}
+.toast{background:var(--white);color:#000;padding:14px 20px;border-radius:8px;font-size:14px;font-weight:500;opacity:0;transform:translateY(16px);transition:.3s;pointer-events:auto;display:flex;align-items:center;gap:10px;min-width:240px;}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast i{font-size:18px;}
+.toast-ok i{color:#16a34a;}
+.toast-err i{color:#dc2626;}
+.spin{display:inline-block;width:16px;height:16px;border:2px solid var(--border2);border-top-color:var(--white);border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ===== MISC ===== */
+.section-divider{height:1px;background:var(--border);}
+.page-label{font-size:11px;letter-spacing:2px;color:var(--gray2);text-transform:uppercase;}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .topbar-nav{display:none;}
+  .cat-grid{grid-template-columns:repeat(2,1fr);}
+  .benefits-wrap{grid-template-columns:1fr;gap:40px;}
+  .steps-row{grid-template-columns:repeat(2,1fr);}
+  .hero-stats{flex-direction:column;}
+  .hero-stat{border-right:none;border-bottom:1px solid var(--border);}
+  .detail-body{grid-template-columns:1fr;}
+  .detail-photos{grid-template-columns:1fr;}
+  .detail-photos-side{display:none;}
+  .map-body{grid-template-columns:1fr;}
+  .map-list{display:none;}
+  .dash-wrap{grid-template-columns:1fr;}
+  .dash-nav{display:none;}
+  .form-row2{grid-template-columns:1fr;}
+  .lcard-photo{width:110px;min-width:110px;}
+  .listing-header{padding:20px 20px;}
+  .listing-filters,.listing-grid{padding-left:20px;padding-right:20px;}
+  .detail-wrap,.demand-board,.req-wrap,.pay-wrap,.section{padding-left:20px;padding-right:20px;}
+}
+</style>
+</head>
+<body>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- ===== TOPBAR ===== -->
+<div class="topbar">
+  <div class="ham" onclick="openSidebar()"><span></span><span></span><span></span></div>
+  <span class="ckeys-logo" onclick="nav('home')">ck<span>eys</span></span>
+  <div class="topbar-spacer"></div>
+  <div class="topbar-nav" id="topNav">
+    <a onclick="nav('home')" id="tnav-home" class="active">Home</a>
+    <a onclick="nav('property')" id="tnav-property">Property</a>
+    <a onclick="nav('vehicle')" id="tnav-vehicle">Vehicles</a>
+    <a onclick="nav('tools')" id="tnav-tools">Tools</a>
+    <a onclick="nav('services')" id="tnav-services">Services</a>
+    <a onclick="nav('map')" id="tnav-map">Map</a>
+    <a onclick="nav('board')" id="tnav-board">Demand Board</a>
+  </div>
+  <div class="topbar-actions">
+    <button class="t-btn t-ghost" onclick="nav('auth')" id="loginBtn">Log in</button>
+    <button class="t-btn t-solid" onclick="nav('request')">+ Request</button>
+  </div>
+</div>
+
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar-wrap" id="sidebarWrap">
+  <div class="sidebar-scrim" onclick="closeSidebar()"></div>
+  <div class="sidebar">
+    <div class="sb-head">
+      <span class="ckeys-logo">ck<span>eys</span></span>
+      <button class="sb-close" onclick="closeSidebar()"><i class="ti ti-x"></i></button>
+    </div>
+    <div style="overflow-y:auto;flex:1;">
+      <div class="sb-label">Rentals</div>
+      <div class="sb-link" onclick="nav('property');closeSidebar()"><i class="ti ti-home-2"></i>Property</div>
+      <div class="sb-link" onclick="nav('vehicle');closeSidebar()"><i class="ti ti-car"></i>Vehicles</div>
+      <div class="sb-link" onclick="nav('tools');closeSidebar()"><i class="ti ti-tool"></i>Tools & Equipment</div>
+      <div class="sb-link" onclick="nav('services');closeSidebar()"><i class="ti ti-briefcase"></i>Services</div>
+      <div class="sb-label">Explore</div>
+      <div class="sb-link" onclick="nav('map');closeSidebar()"><i class="ti ti-map-2"></i>Map view</div>
+      <div class="sb-link" onclick="nav('board');closeSidebar()"><i class="ti ti-clipboard-list"></i>Demand board</div>
+      <div class="sb-label">Account</div>
+      <div class="sb-link" onclick="nav('dashboard');closeSidebar()"><i class="ti ti-layout-dashboard"></i>Dashboard</div>
+      <div class="sb-link" onclick="nav('request');closeSidebar()"><i class="ti ti-plus"></i>Submit request</div>
+      <div class="sb-link" onclick="nav('auth');closeSidebar()"><i class="ti ti-user"></i>Sign in / Register</div>
+    </div>
+    <div class="sb-user" id="sbUser" style="display:none;">
+      <div class="sb-user-card">
+        <div class="sb-avatar" id="sbAvatar">?</div>
+        <div><div style="font-size:14px;font-weight:600;color:var(--white)" id="sbName">Guest</div><div style="font-size:12px;color:var(--gray)" id="sbEmail"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================================================== -->
+<!-- HOME PAGE -->
+<!-- ===================================================== -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-badge"><span class="hero-badge-dot"></span>Malaysia's complete rental platform</div>
+    <h1 class="hero-h1">One key.<br/><span class="dim">Every rental.</span></h1>
+    <p class="hero-sub">Homes, vehicles, tools, and services — verified, protected, and managed end-to-end through CKEYS.</p>
+    <div class="hero-btns">
+      <button class="hero-btn-main" onclick="nav('property')">Browse listings</button>
+      <button class="hero-btn-sec" onclick="nav('map')">View on map</button>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num">12,400+</div><div class="hero-stat-lbl">Active listings</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">8,200+</div><div class="hero-stat-lbl">Open requests</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">RM 4.2M</div><div class="hero-stat-lbl">Transacted</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">4</div><div class="hero-stat-lbl">Rental categories</div></div>
+    </div>
+  </section>
+  <div class="ticker-wrap"><div class="ticker-inner">
+    <span class="tick-item"><span class="tick-dot"></span>Property</span><span class="tick-item"><span class="tick-dot"></span>Vehicles</span><span class="tick-item"><span class="tick-dot"></span>Tools</span><span class="tick-item"><span class="tick-dot"></span>Services</span><span class="tick-item"><span class="tick-dot"></span>Verified owners</span><span class="tick-item"><span class="tick-dot"></span>Auto contracts</span><span class="tick-item"><span class="tick-dot"></span>FPX payments</span><span class="tick-item"><span class="tick-dot"></span>Deposit protected</span>
+    <span class="tick-item"><span class="tick-dot"></span>Property</span><span class="tick-item"><span class="tick-dot"></span>Vehicles</span><span class="tick-item"><span class="tick-dot"></span>Tools</span><span class="tick-item"><span class="tick-dot"></span>Services</span><span class="tick-item"><span class="tick-dot"></span>Verified owners</span><span class="tick-item"><span class="tick-dot"></span>Auto contracts</span><span class="tick-item"><span class="tick-dot"></span>FPX payments</span><span class="tick-item"><span class="tick-dot"></span>Deposit protected</span>
+  </div></div>
+  <section class="section" style="border-top:1px solid var(--border);">
+    <div class="section-label">Browse by category</div>
+    <div class="section-h2">What are you looking for?</div>
+    <div class="cat-grid">
+      <div class="cat-card prop" onclick="nav('property')"><i class="ti ti-home-2 cat-icon"></i><div class="cat-name">Property</div><div class="cat-count">3,214 listings</div><div style="font-size:12px;color:var(--gray);margin-top:6px;">House · Land · Office · Room</div><i class="ti ti-arrow-up-right cat-arrow"></i></div>
+      <div class="cat-card veh" onclick="nav('vehicle')"><i class="ti ti-car cat-icon"></i><div class="cat-name">Vehicles</div><div class="cat-count">1,840 listings</div><div style="font-size:12px;color:var(--gray);margin-top:6px;">Car · Van · Motorcycle</div><i class="ti ti-arrow-up-right cat-arrow"></i></div>
+      <div class="cat-card tool" onclick="nav('tools')"><i class="ti ti-tool cat-icon"></i><div class="cat-name">Tools & Equipment</div><div class="cat-count">2,108 listings</div><div style="font-size:12px;color:var(--gray);margin-top:6px;">Contractor · Power tools · Heavy</div><i class="ti ti-arrow-up-right cat-arrow"></i></div>
+      <div class="cat-card svc" onclick="nav('services')"><i class="ti ti-briefcase cat-icon"></i><div class="cat-name">Services</div><div class="cat-count">986 listings</div><div style="font-size:12px;color:var(--gray);margin-top:6px;">Electrical · Plumbing · Cleaning</div><i class="ti ti-arrow-up-right cat-arrow"></i></div>
+    </div>
+  </section>
+  <section class="benefits-wrap">
+    <div>
+      <div class="ben-side-label">For tenants & clients</div>
+      <h2 class="ben-side-h">Find exactly what you need</h2>
+      <div class="ben-items">
+        <div class="ben-item"><div class="ben-icon"><i class="ti ti-shield-check"></i></div><div class="ben-text"><h4>Verified listings</h4><p>All owners verified with MyKad and background check. You deal with real people.</p></div></div>
+        <div class="ben-item"><div class="ben-icon"><i class="ti ti-lock"></i></div><div class="ben-text"><h4>Deposit protection</h4><p>CKEYS holds 50% of deposit. Both sides win — returned at contract end.</p></div></div>
+        <div class="ben-item"><div class="ben-icon"><i class="ti ti-file-text"></i></div><div class="ben-text"><h4>Auto-generated contracts</h4><p>Legal agreements built instantly. Sign digitally — no paperwork needed.</p></div></div>
+        <div class="ben-item"><div class="ben-icon"><i class="ti ti-credit-card"></i></div><div class="ben-text"><h4>FPX secure payment</h4><p>Pay through Malaysian online banking. Funds flow safely through CKEYS.</p></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="ben-side-label">For owners & workers</div>
+      <h2 class="ben-side-h">Turn assets into income</h2>
+      <div class="ben-items">
+        <div class="ben-item"><div class="ben-icon"><i class="ti ti-clipboard-list"></i></div><div class="ben-text"><h4>Live demand board</h4><p>Browse verified tenants actively looking for your property, vehicle, tools or service.</p></div></div>
+        <div class="ben-item"><div class="ben-icon"><i class="ti ti-chart-line"></i></div><div class="ben-text"><h4>Earnings dashboard</h4><p>Track income, active contracts, deposits and payout history in one place.</p></div></div>
+        <div class="ben-item"><div class="ben-icon"><i class="ti ti-map-pin"></i></div><div class="ben-text"><h4>Map discovery</h4><p>Your listing appears on the map — nearby tenants find you first.</p></div></div>
+        <div class="ben-item"><div class="ben-icon"><i class="ti ti-bell"></i></div><div class="ben-text"><h4>Smart notifications</h4><p>Get instant alerts when a booking request matches your listing.</p></div></div>
+      </div>
+    </div>
+  </section>
+  <section class="section" style="border-top:1px solid var(--border);background:var(--bg2);">
+    <div class="section-label">Process flow</div>
+    <div class="section-h2">The complete rental circle</div>
+    <div class="steps-row">
+      <div class="step"><div class="step-num">01</div><div class="step-title">List or request</div><div class="step-desc">Owner lists their asset. Tenant posts a demand card — type, area, budget, dates.</div></div>
+      <div class="step"><div class="step-num">02</div><div class="step-title">Match & deal</div><div class="step-desc">Owner sees demand, responds. Both parties negotiate on the dealing board.</div></div>
+      <div class="step"><div class="step-num">03</div><div class="step-title">Sign contract</div><div class="step-desc">CKEYS auto-generates a digital contract. Both parties confirm and sign online.</div></div>
+      <div class="step"><div class="step-num">04</div><div class="step-title">Secure payment</div><div class="step-desc">Tenant pays through CKEYS. Deposit protected. Owner paid after fee deduction.</div></div>
+      <div class="step"><div class="step-num">05</div><div class="step-title">Managed cycle</div><div class="step-desc">Invoices, reminders, renewals and receipts handled automatically by CKEYS.</div></div>
+    </div>
+  </section>
+  <footer style="border-top:1px solid var(--border);padding:48px 40px 28px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;background:var(--bg2);">
+    <div><span class="ckeys-logo" style="font-size:20px;display:block;margin-bottom:14px;">ck<span>eys</span></span><p style="font-size:13px;color:var(--gray);line-height:1.8;max-width:220px;">Malaysia's complete rental ecosystem — property, vehicles, tools, and services managed end-to-end.</p></div>
+    <div><h4 style="font-size:11px;letter-spacing:1.5px;color:var(--gray2);text-transform:uppercase;margin-bottom:14px;">Rentals</h4>
+      <a onclick="nav('property')" style="display:block;font-size:13px;color:var(--gray);margin-bottom:10px;cursor:pointer;">Property</a>
+      <a onclick="nav('vehicle')" style="display:block;font-size:13px;color:var(--gray);margin-bottom:10px;cursor:pointer;">Vehicles</a>
+      <a onclick="nav('tools')" style="display:block;font-size:13px;color:var(--gray);margin-bottom:10px;cursor:pointer;">Tools</a>
+      <a onclick="nav('services')" style="display:block;font-size:13px;color:var(--gray);cursor:pointer;">Services</a>
+    </div>
+    <div><h4 style="font-size:11px;letter-spacing:1.5px;color:var(--gray2);text-transform:uppercase;margin-bottom:14px;">Platform</h4>
+      <a onclick="nav('board')" style="display:block;font-size:13px;color:var(--gray);margin-bottom:10px;cursor:pointer;">Demand board</a>
+      <a onclick="nav('map')" style="display:block;font-size:13px;color:var(--gray);margin-bottom:10px;cursor:pointer;">Map view</a>
+      <a onclick="nav('dashboard')" style="display:block;font-size:13px;color:var(--gray);cursor:pointer;">Dashboard</a>
+    </div>
+    <div><h4 style="font-size:11px;letter-spacing:1.5px;color:var(--gray2);text-transform:uppercase;margin-bottom:14px;">Legal</h4>
+      <a style="display:block;font-size:13px;color:var(--gray);margin-bottom:10px;cursor:pointer;">Privacy policy</a>
+      <a style="display:block;font-size:13px;color:var(--gray);cursor:pointer;">Terms of use</a>
+    </div>
+  </footer>
+  <div style="border-top:1px solid var(--border);padding:18px 40px;display:flex;justify-content:space-between;background:var(--bg);">
+    <span style="font-size:12px;color:var(--gray2);">© 2025 CKEYS. All rights reserved.</span>
+    <span style="font-size:12px;color:var(--gray2);">Built for Malaysia 🇲🇾</span>
+  </div>
+</div>
+
+<!-- ===================================================== -->
+<!-- PROPERTY LISTING PAGE -->
+<!-- ===================================================== -->
+<div class="page" id="page-property">
+  <div class="listing-page-wrap">
+    <div class="listing-header">
+      <div class="listing-header-icon prop"><i class="ti ti-home-2"></i></div>
+      <div class="listing-header-title">
+        <h2>Property Rentals</h2>
+        <p>Houses, rooms, land, offices and commercial spaces across Malaysia</p>
+      </div>
+      <div class="listing-header-actions">
+        <button class="t-btn t-ghost" onclick="nav('map')"><i class="ti ti-map-2" style="margin-right:6px;"></i>View on map</button>
+        <button class="t-btn t-solid" onclick="nav('request')">+ List property</button>
+      </div>
+    </div>
+    <div class="listing-filters">
+      <input class="filter-search" placeholder="Search area, postcode or property name..."/>
+      <button class="filter-chip on" onclick="chipSelect(this,'prop-type','all')">All</button>
+      <button class="filter-chip" onclick="chipSelect(this,'prop-type','house')">House</button>
+      <button class="filter-chip" onclick="chipSelect(this,'prop-type','room')">Room</button>
+      <button class="filter-chip" onclick="chipSelect(this,'prop-type','land')">Land</button>
+      <button class="filter-chip" onclick="chipSelect(this,'prop-type','office')">Office</button>
+      <button class="filter-chip" onclick="chipSelect(this,'prop-type','commercial')">Commercial</button>
+    </div>
+    <div class="listing-grid" id="propGrid"></div>
+    <div class="demand-section">
+      <div class="demand-section-title"><i class="ti ti-broadcast" style="font-size:16px;color:var(--prop);"></i> Open property requests — post yours or respond to these</div>
+      <div class="demand-cards-row" id="propDemandRow"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================================================== -->
+<!-- VEHICLE LISTING PAGE -->
+<!-- ===================================================== -->
+<div class="page" id="page-vehicle">
+  <div class="listing-page-wrap">
+    <div class="listing-header">
+      <div class="listing-header-icon veh"><i class="ti ti-car"></i></div>
+      <div class="listing-header-title">
+        <h2>Vehicle Rentals</h2>
+        <p>Cars, vans, motorcycles — daily, weekly, or monthly packages</p>
+      </div>
+      <div class="listing-header-actions">
+        <button class="t-btn t-ghost" onclick="nav('map')"><i class="ti ti-map-2" style="margin-right:6px;"></i>View on map</button>
+        <button class="t-btn t-solid" onclick="nav('request')">+ List vehicle</button>
+      </div>
+    </div>
+    <div class="listing-filters">
+      <input class="filter-search" placeholder="Search car model, area..."/>
+      <button class="filter-chip on" onclick="chipSelect(this,'veh-type','all')">All</button>
+      <button class="filter-chip" onclick="chipSelect(this,'veh-type','sedan')">Sedan</button>
+      <button class="filter-chip" onclick="chipSelect(this,'veh-type','suv')">SUV</button>
+      <button class="filter-chip" onclick="chipSelect(this,'veh-type','van')">Van</button>
+      <button class="filter-chip" onclick="chipSelect(this,'veh-type','motorcycle')">Motorcycle</button>
+      <button class="filter-chip" onclick="chipSelect(this,'veh-type','truck')">Truck</button>
+    </div>
+    <div class="listing-grid" id="vehGrid"></div>
+    <div class="demand-section">
+      <div class="demand-section-title"><i class="ti ti-broadcast" style="font-size:16px;color:var(--veh);"></i> Open vehicle requests</div>
+      <div class="demand-cards-row" id="vehDemandRow"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================================================== -->
+<!-- TOOLS LISTING PAGE -->
+<!-- ===================================================== -->
+<div class="page" id="page-tools">
+  <div class="listing-page-wrap">
+    <div class="listing-header">
+      <div class="listing-header-icon tool"><i class="ti ti-tool"></i></div>
+      <div class="listing-header-title">
+        <h2>Tools & Equipment Rentals</h2>
+        <p>Power tools, heavy equipment, contractor gear — by day, week or month</p>
+      </div>
+      <div class="listing-header-actions">
+        <button class="t-btn t-ghost" onclick="nav('map')"><i class="ti ti-map-2" style="margin-right:6px;"></i>View on map</button>
+        <button class="t-btn t-solid" onclick="nav('request')">+ List tools</button>
+      </div>
+    </div>
+    <div class="listing-filters">
+      <input class="filter-search" placeholder="Search tool name, brand, area..."/>
+      <button class="filter-chip on" onclick="chipSelect(this,'tool-type','all')">All</button>
+      <button class="filter-chip" onclick="chipSelect(this,'tool-type','power')">Power tools</button>
+      <button class="filter-chip" onclick="chipSelect(this,'tool-type','heavy')">Heavy equipment</button>
+      <button class="filter-chip" onclick="chipSelect(this,'tool-type','concrete')">Concrete</button>
+      <button class="filter-chip" onclick="chipSelect(this,'tool-type','electrical')">Electrical</button>
+      <button class="filter-chip" onclick="chipSelect(this,'tool-type','safety')">Safety</button>
+    </div>
+    <div class="listing-grid" id="toolGrid"></div>
+    <div class="demand-section">
+      <div class="demand-section-title"><i class="ti ti-broadcast" style="font-size:16px;color:var(--tool);"></i> Open tool requests</div>
+      <div class="demand-cards-row" id="toolDemandRow"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================================================== -->
+<!-- SERVICES LISTING PAGE -->
+<!-- ===================================================== -->
+<div class="page" id="page-services">
+  <div class="listing-page-wrap">
+    <div class="listing-header">
+      <div class="listing-header-icon svc"><i class="ti ti-briefcase"></i></div>
+      <div class="listing-header-title">
+        <h2>Services</h2>
+        <p>Electricians, plumbers, cleaners, grass cutters — hire and pay safely</p>
+      </div>
+      <div class="listing-header-actions">
+        <button class="t-btn t-ghost" onclick="nav('map')"><i class="ti ti-map-2" style="margin-right:6px;"></i>View on map</button>
+        <button class="t-btn t-solid" onclick="nav('request')">+ List service</button>
+      </div>
+    </div>
+    <div class="listing-filters">
+      <input class="filter-search" placeholder="Search service type, area..."/>
+      <button class="filter-chip on" onclick="chipSelect(this,'svc-type','all')">All</button>
+      <button class="filter-chip" onclick="chipSelect(this,'svc-type','electrical')">Electrical</button>
+      <button class="filter-chip" onclick="chipSelect(this,'svc-type','plumbing')">Plumbing</button>
+      <button class="filter-chip" onclick="chipSelect(this,'svc-type','cleaning')">Cleaning</button>
+      <button class="filter-chip" onclick="chipSelect(this,'svc-type','grass')">Grass cut</button>
+      <button class="filter-chip" onclick="chipSelect(this,'svc-type','renovation')">Renovation</button>
+    </div>
+    <div class="listing-grid" id="svcGrid"></div>
+    <div class="demand-section">
+      <div class="demand-section-title"><i class="ti ti-broadcast" style="font-size:16px;color:var(--svc);"></i> Open service requests</div>
+      <div class="demand-cards-row" id="svcDemandRow"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================================================== -->
+<!-- DETAIL PAGE -->
+<!-- ===================================================== -->
+<div class="page" id="page-detail">
+  <div class="detail-wrap">
+    <div class="detail-back" onclick="goBack()"><i class="ti ti-arrow-left"></i> Back to listings</div>
+    <div class="detail-photos">
+      <div class="detail-photo-main" id="detailPhotoMain"><div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;color:var(--border2);"><i class="ti ti-photo"></i></div></div>
+      <div class="detail-photos-side">
+        <div class="detail-photo-side"><i class="ti ti-photo"></i></div>
+        <div class="detail-photo-side"><i class="ti ti-photo"></i></div>
+      </div>
+    </div>
+    <div class="detail-body">
+      <div class="detail-info">
+        <div class="detail-type-badge" id="detailBadge"></div>
+        <div class="detail-title" id="detailTitle"></div>
+        <div class="detail-location" id="detailLocation"><i class="ti ti-map-pin"></i></div>
+        <div class="detail-features" id="detailFeatures"></div>
+        <div class="detail-desc" id="detailDesc"></div>
+        <div style="margin-bottom:16px;"><div style="font-size:13px;color:var(--gray);margin-bottom:10px;">Amenities & features</div><div class="detail-tags-row" id="detailTags"></div></div>
+        <div style="margin-top:24px;padding-top:24px;border-top:1px solid var(--border);">
+          <div style="font-size:13px;color:var(--gray);margin-bottom:8px;">About the owner</div>
+          <div class="detail-owner">
+            <div class="owner-avatar" id="detailOwnerAvatar">A</div>
+            <div>
+              <div class="owner-name" id="detailOwnerName">Owner Name</div>
+              <div class="owner-sub"><span class="verified-badge"><i class="ti ti-circle-check"></i>Verified · MyKad</span> · Member since 2023</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="detail-sidebar">
+        <div class="detail-price-main" id="detailPriceSide">RM —</div>
+        <div class="detail-price-per" id="detailPricePer">per month</div>
+        <div class="detail-calc">
+          <label id="detailCalcLabel">Duration</label>
+          <input type="number" id="detailDuration" value="3" min="1" oninput="recalcDetail()" style="margin-bottom:10px;"/>
+          <label>Deposit (months)</label>
+          <select id="detailDeposit" onchange="recalcDetail()">
+            <option value="1">1 month deposit</option>
+            <option value="2">2 months deposit</option>
+            <option value="3">3 months deposit</option>
+          </select>
+        </div>
+        <div class="detail-breakdown">
+          <div class="detail-bd-row"><span>Rental</span><span id="bdRental">—</span></div>
+          <div class="detail-bd-row"><span>Deposit (held by CKEYS)</span><span id="bdDeposit">—</span></div>
+          <div class="detail-bd-row"><span>Platform fee (3%)</span><span id="bdFee">—</span></div>
+          <div class="detail-bd-row"><span>Total due</span><span id="bdTotal">—</span></div>
+        </div>
+        <button class="detail-book-btn" onclick="bookNow()">Book now</button>
+        <button class="detail-contact-btn" onclick="toast('Message sent to owner','ok')">Message owner</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================================================== -->
+<!-- MAP PAGE -->
+<!-- ===================================================== -->
+<div class="page" id="page-map">
+  <div class="map-controls">
+    <input class="map-search-in" placeholder="Search area, postcode or city..." id="mapSearchInput"/>
+    <button class="filter-chip on" onclick="filterMap(this,'all')">All</button>
+    <button class="filter-chip" onclick="filterMap(this,'home')"><i class="ti ti-home-2" style="margin-right:4px;"></i>Property</button>
+    <button class="filter-chip" onclick="filterMap(this,'car')"><i class="ti ti-car" style="margin-right:4px;"></i>Vehicles</button>
+    <button class="filter-chip" onclick="filterMap(this,'tool')"><i class="ti ti-tool" style="margin-right:4px;"></i>Tools</button>
+    <button class="filter-chip" onclick="filterMap(this,'service')"><i class="ti ti-briefcase" style="margin-right:4px;"></i>Services</button>
+  </div>
+  <div class="map-body">
+    <div class="map-list" id="mapList"></div>
+    <div class="map-canvas">
+      <div class="map-svg-wrap" id="mapSvgWrap">
+        <svg width="100%" height="100%" viewBox="0 0 700 500" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;">
+          <rect width="700" height="500" fill="#131313"/>
+          <rect x="40" y="30" width="620" height="440" rx="4" fill="#161616" stroke="#222" stroke-width="1"/>
+          <line x1="0" y1="250" x2="700" y2="250" stroke="#1e1e1e" stroke-width="1"/>
+          <line x1="350" y1="0" x2="350" y2="500" stroke="#1e1e1e" stroke-width="1"/>
+          <!-- Malaysia map sketch -->
+          <path d="M120,180 L180,150 L260,140 L310,155 L340,145 L370,160 L400,150 L430,165 L440,200 L420,230 L380,240 L350,260 L310,270 L280,260 L240,265 L200,250 L160,240 L130,210 Z" fill="#1c1c1c" stroke="#252525" stroke-width="1.5"/>
+          <!-- Sabah sketch -->
+          <path d="M470,130 L530,120 L580,130 L600,155 L590,180 L560,185 L530,175 L500,180 L475,170 L465,150 Z" fill="#1c1c1c" stroke="#252525" stroke-width="1"/>
+          <!-- Sarawak sketch -->
+          <path d="M420,180 L480,170 L540,175 L590,200 L600,240 L580,260 L550,265 L500,255 L460,240 L430,220 L415,200 Z" fill="#1c1c1c" stroke="#252525" stroke-width="1"/>
+          <!-- Roads -->
+          <line x1="200" y1="150" x2="380" y2="240" stroke="#1f1f1f" stroke-width="3"/>
+          <line x1="220" y1="180" x2="350" y2="260" stroke="#1f1f1f" stroke-width="2"/>
+          <!-- City labels -->
+          <text x="300" y="195" text-anchor="middle" fill="#333" font-size="10" font-family="DM Mono,monospace">Kuala Lumpur</text>
+          <text x="170" y="220" text-anchor="middle" fill="#333" font-size="10" font-family="DM Mono,monospace">Kuantan</text>
+          <text x="380" y="265" text-anchor="middle" fill="#333" font-size="10" font-family="DM Mono,monospace">Johor Bahru</text>
+          <text x="230" y="250" text-anchor="middle" fill="#333" font-size="10" font-family="DM Mono,monospace">Seremban</text>
+          <text x="320" y="170" text-anchor="middle" fill="#333" font-size="10" font-family="DM Mono,monospace">Ipoh</text>
+          <text x="230" y="165" text-anchor="middle" fill="#333" font-size="10" font-family="DM Mono,monospace">Penang</text>
+          <text x="530" y="155" text-anchor="middle" fill="#333" font-size="10" font-family="DM Mono,monospace">Kota Kinabalu</text>
+          <text x="510" y="230" text-anchor="middle" fill="#333" font-size="10" font-family="DM Mono,monospace">Kuching</text>
+          <text x="350" y="492" text-anchor="middle" fill="#2a2a2a" font-size="10" font-family="DM Mono,monospace">Malaysia · Simulated Map View</text>
+        </svg>
+        <div id="mapPins"></div>
+        <div class="map-popup" id="mapPopup">
+          <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px;" id="popTitle">-</div>
+          <div style="font-size:12px;color:var(--gray);margin-bottom:10px;" id="popMeta">-</div>
+          <div style="font-family:'DM Mono',monospace;font-size:15px;color:var(--white);margin-bottom:12px;" id="popPrice">-</div>
+          <button onclick="openDetailFromMap()" class="full-btn full-btn-white" style="padding:10px;font-size:13px;">View details</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================================================== -->
+<!-- DEMAND BOARD -->
+<!-- ===================================================== -->
+<div class="page" id="page-board">
+  <div class="demand-board">
+    <div style="margin-bottom:24px;"><div class="section-label">Demand board</div><h2 style="font-size:26px;font-weight:700;letter-spacing:-.5px;color:var(--white);margin-top:4px;">Active rental requests</h2><p style="font-size:14px;color:var(--gray);margin-top:6px;">Verified tenants looking for your property, vehicle, tools or services</p></div>
+    <div class="board-controls">
+      <button class="filter-chip on" onclick="chipSelect(this,'board','all');renderBoard('all')">All</button>
+      <button class="filter-chip" onclick="chipSelect(this,'board','home');renderBoard('home')"><i class="ti ti-home-2" style="margin-right:4px;"></i>Property</button>
+      <button class="filter-chip" onclick="chipSelect(this,'board','car');renderBoard('car')"><i class="ti ti-car" style="margin-right:4px;"></i>Vehicle</button>
+      <button class="filter-chip" onclick="chipSelect(this,'board','tool');renderBoard('tool')"><i class="ti ti-tool" style="margin-right:4px;"></i>Tools</button>
+      <button class="filter-chip" onclick="chipSelect(this,'board','service');renderBoard('service')"><i class="ti ti-briefcase" style="margin-right:4px;"></i>Services</button>
+      <div style="flex:1;"></div>
+      <button class="t-btn t-solid" onclick="nav('request')">+ Post request</button>
+    </div>
+    <div class="demand-grid" id="demandGrid"></div>
+  </div>
+</div>
+
+<!-- ===================================================== -->
+<!-- REQUEST FORM -->
+<!-- ===================================================== -->
+<div class="page" id="page-request">
+  <div class="req-wrap">
+    <div style="margin-bottom:28px;"><div class="page-label">Submit request</div><h2 style="font-size:24px;font-weight:700;letter-spacing:-.5px;margin-top:8px;">Post a demand ticket</h2><p style="font-size:14px;color:var(--gray);margin-top:6px;">Describe what you need — owners will reach out to you directly</p></div>
+    <div class="form-section-title">Category</div>
+    <div class="form-grp">
+      <label>Request type</label>
+      <select id="rType">
+        <option value="home">Property rental</option>
+        <option value="car">Vehicle rental</option>
+        <option value="tool">Tools & equipment</option>
+        <option value="service">Service needed</option>
+      </select>
+    </div>
+    <div class="form-section-title">Your details</div>
+    <div class="form-row2">
+      <div class="form-grp"><label>Full name</label><input type="text" id="rName" placeholder="Ahmad bin Ali"/></div>
+      <div class="form-grp"><label>Phone number</label><input type="tel" id="rPhone" placeholder="+60 12-345 6789"/></div>
+    </div>
+    <div class="form-grp"><label>Email address</label><input type="email" id="rEmail" placeholder="you@email.com"/></div>
+    <div class="form-section-title">Request details</div>
+    <div class="form-grp"><label>Location / Area</label><input type="text" id="rLoc" placeholder="e.g. Kuantan, Pahang"/></div>
+    <div class="form-row2">
+      <div class="form-grp"><label>Budget min (RM)</label><input type="number" id="rBudMin" placeholder="500"/></div>
+      <div class="form-grp"><label>Budget max (RM)</label><input type="number" id="rBudMax" placeholder="1500"/></div>
+    </div>
+    <div class="form-row2">
+      <div class="form-grp"><label>From date</label><input type="date" id="rMoveIn"/></div>
+      <div class="form-grp"><label>Until date</label><input type="date" id="rMoveOut"/></div>
+    </div>
+    <div class="form-grp"><label>Billing cycle</label>
+      <select id="rCycle"><option>Monthly</option><option>Weekly</option><option>Daily</option><option>One-time</option></select>
+    </div>
+    <div class="form-grp"><label>Sub-type / preferences</label>
+      <div class="tag-select" id="reqTags">
+        <button class="tag-btn" onclick="toggleTag(this)">Furnished</button>
+        <button class="tag-btn" onclick="toggleTag(this)">Parking</button>
+        <button class="tag-btn" onclick="toggleTag(this)">WiFi</button>
+        <button class="tag-btn" onclick="toggleTag(this)">Air-cond</button>
+        <button class="tag-btn" onclick="toggleTag(this)">Pet friendly</button>
+        <button class="tag-btn" onclick="toggleTag(this)">Near school</button>
+        <button class="tag-btn" onclick="toggleTag(this)">Ground floor</button>
+        <button class="tag-btn" onclick="toggleTag(this)">Automatic car</button>
+        <button class="tag-btn" onclick="toggleTag(this)">With driver</button>
+        <button class="tag-btn" onclick="toggleTag(this)">Heavy duty</button>
+      </div>
+    </div>
+    <div class="form-grp"><label>Additional notes</label><textarea id="rOther" placeholder="Any specific requirements, accessibility needs, or details..."></textarea></div>
+    <div class="submit-row">
+      <button class="t-btn t-ghost" onclick="nav('board')">Cancel</button>
+      <button class="t-btn t-solid" onclick="submitRequest()" id="submitBtnLabel">Submit demand ticket</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================================================== -->
+<!-- PAYMENT PAGE -->
+<!-- ===================================================== -->
+<div class="page" id="page-payment">
+  <div class="pay-wrap">
+    <div style="margin-bottom:24px;"><div class="page-label">Payment</div><h2 style="font-size:24px;font-weight:700;letter-spacing:-.5px;margin-top:8px;">Complete your booking</h2></div>
+    <div id="payContent">
+      <div class="pay-summary">
+        <h3>Booking summary</h3>
+        <div class="pay-row"><span>Listing</span><span id="payListing" style="color:var(--white);">Selected listing</span></div>
+        <div class="pay-row"><span>Duration</span><span id="payDuration" style="color:var(--white);">3 months</span></div>
+        <div class="pay-row"><span>Monthly rate</span><span id="payRate" style="color:var(--white);">RM 1,800</span></div>
+        <div class="pay-row"><span>Deposit (held by CKEYS)</span><span id="payDeposit" style="color:var(--amber);">RM 1,800</span></div>
+        <div class="pay-row"><span>Platform fee (3%)</span><span id="payFee" style="color:var(--white);">RM 162</span></div>
+        <div class="pay-row"><span>Total due now</span><span id="payTotal">RM 7,362</span></div>
+      </div>
+      <div style="margin-bottom:16px;font-size:14px;font-weight:600;color:var(--white);">Select payment method</div>
+      <div class="pay-methods">
+        <div class="pay-method on" id="pm-fpx" onclick="selectPM('fpx')"><i class="ti ti-building-bank"></i><span>FPX Online Banking</span></div>
+        <div class="pay-method" id="pm-card" onclick="selectPM('card')"><i class="ti ti-credit-card"></i><span>Credit / Debit card</span></div>
+      </div>
+      <div id="fpxSection">
+        <div style="font-size:13px;color:var(--gray);margin-bottom:12px;">Select your bank</div>
+        <div class="fpx-banks">
+          <button class="bank-btn" onclick="selectBank(this)">Maybank</button>
+          <button class="bank-btn" onclick="selectBank(this)">CIMB</button>
+          <button class="bank-btn" onclick="selectBank(this)">Public Bank</button>
+          <button class="bank-btn" onclick="selectBank(this)">RHB</button>
+          <button class="bank-btn" onclick="selectBank(this)">Bank Islam</button>
+          <button class="bank-btn" onclick="selectBank(this)">AmBank</button>
+        </div>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:20px;display:flex;gap:10px;align-items:flex-start;">
+        <i class="ti ti-shield-check" style="color:var(--green);font-size:18px;flex-shrink:0;margin-top:2px;"></i>
+        <div style="font-size:13px;color:var(--gray);line-height:1.7;">Payment goes into <strong style="color:var(--white);">CKEYS escrow account</strong>. Owner receives funds only after your rental begins. Deposit returned at contract end.</div>
+      </div>
+      <button class="full-btn full-btn-white" onclick="processPayment()" id="payBtn">Confirm & pay</button>
+    </div>
+    <div id="payDone" style="display:none;">
+      <div class="pay-status">
+        <i class="ti ti-circle-check" style="color:var(--green);"></i>
+        <h3>Payment confirmed!</h3>
+        <p style="margin-bottom:20px;">Your booking is locked in. A digital contract will be generated and sent to both parties.</p>
+        <button class="t-btn t-solid" onclick="nav('dashboard')" style="margin-right:10px;">View dashboard</button>
+        <button class="t-btn t-ghost" onclick="nav('home')">Back to home</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================================================== -->
+<!-- DASHBOARD -->
+<!-- ===================================================== -->
+<div class="page" id="page-dashboard">
+  <div class="dash-wrap">
+    <div class="dash-nav">
+      <div style="padding:16px 20px;font-size:11px;color:var(--gray2);letter-spacing:1.5px;text-transform:uppercase;">My account</div>
+      <div class="dash-nav-item active" onclick="dashTab('overview',this)"><i class="ti ti-layout-dashboard"></i>Overview</div>
+      <div class="dash-nav-item" onclick="dashTab('contracts',this)"><i class="ti ti-file-text"></i>Contracts</div>
+      <div class="dash-nav-item" onclick="dashTab('payments',this)"><i class="ti ti-credit-card"></i>Payments</div>
+      <div class="dash-nav-item" onclick="dashTab('listings',this)"><i class="ti ti-list-details"></i>My listings</div>
+      <div class="dash-nav-item" onclick="dashTab('profile',this)"><i class="ti ti-user"></i>Profile & KYC</div>
+    </div>
+    <div class="dash-content">
+      <!-- Overview -->
+      <div id="dash-overview">
+        <div class="dash-header"><h2>Dashboard</h2><button class="t-btn t-ghost" onclick="nav('request')">+ Post request</button></div>
+        <div class="metrics-grid">
+          <div class="metric"><div class="metric-val">RM 5,400</div><div class="metric-lbl">This month income</div><div class="metric-delta delta-up">↑ 12% from last month</div></div>
+          <div class="metric"><div class="metric-val">3</div><div class="metric-lbl">Active contracts</div><div class="metric-delta" style="color:var(--gray);">2 property · 1 vehicle</div></div>
+          <div class="metric"><div class="metric-val">RM 3,600</div><div class="metric-lbl">Deposit held</div><div class="metric-delta" style="color:var(--amber);">Protected by CKEYS</div></div>
+          <div class="metric"><div class="metric-val">RM 430</div><div class="metric-lbl">Due this week</div><div class="metric-delta delta-dn">Payment due Mon</div></div>
+        </div>
+        <div class="dash-section-title">Active contracts</div>
+        <table class="ticket-table">
+          <thead><tr><th>Listing</th><th>Type</th><th>Tenant</th><th>Monthly</th><th>Next payment</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Taman Kota Jaya 3BR</td><td>Property</td><td>Azman Haris</td><td>RM 1,800</td><td>1 Jun 2025</td><td><span class="status-badge status-paid">Active</span></td></tr>
+            <tr><td>Sri Ampang Studio</td><td>Property</td><td>Nurul Ain</td><td>RM 950</td><td>3 Jun 2025</td><td><span class="status-badge status-paid">Active</span></td></tr>
+            <tr><td>Toyota Hilux D/C</td><td>Vehicle</td><td>Farid Arshad</td><td>RM 2,100</td><td>5 Jun 2025</td><td><span class="status-badge status-matched">Active</span></td></tr>
+          </tbody>
+        </table>
+        <div class="dash-section-title">Recent payments</div>
+        <table class="ticket-table">
+          <thead><tr><th>Date</th><th>Description</th><th>Amount</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>14 May 2025</td><td>Taman Kota Jaya — May rent</td><td style="color:var(--green);">+RM 1,764</td><td><span class="status-badge status-new">Received</span></td></tr>
+            <tr><td>10 May 2025</td><td>Sri Ampang Studio — May rent</td><td style="color:var(--green);">+RM 931.50</td><td><span class="status-badge status-new">Received</span></td></tr>
+            <tr><td>5 May 2025</td><td>Toyota Hilux — May rental</td><td style="color:var(--green);">+RM 2,058</td><td><span class="status-badge status-new">Received</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Contracts -->
+      <div id="dash-contracts" style="display:none;">
+        <div class="dash-header"><h2>Contracts</h2></div>
+        <table class="ticket-table">
+          <thead><tr><th>Contract ID</th><th>Asset</th><th>Parties</th><th>Start</th><th>End</th><th>Value</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>#CK-2024-0031</td><td>Taman Kota Jaya 3BR</td><td>Owner ↔ Azman</td><td>1 Jan 2025</td><td>31 Dec 2025</td><td>RM 21,600</td><td><span class="status-badge status-paid">Active</span></td></tr>
+            <tr><td>#CK-2024-0028</td><td>Sri Ampang Studio</td><td>Owner ↔ Nurul</td><td>1 Mar 2025</td><td>28 Feb 2026</td><td>RM 11,400</td><td><span class="status-badge status-paid">Active</span></td></tr>
+            <tr><td>#CK-2025-0007</td><td>Toyota Hilux</td><td>Owner ↔ Farid</td><td>1 Apr 2025</td><td>30 Sep 2025</td><td>RM 12,600</td><td><span class="status-badge status-matched">Active</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Payments -->
+      <div id="dash-payments" style="display:none;">
+        <div class="dash-header"><h2>Payment history</h2></div>
+        <div style="margin-bottom:24px;display:flex;gap:16px;">
+          <div class="metric" style="flex:1;"><div class="metric-val" style="color:var(--green);">RM 22,410</div><div class="metric-lbl">Total received (2025)</div></div>
+          <div class="metric" style="flex:1;"><div class="metric-val" style="color:var(--red);">RM 672</div><div class="metric-lbl">Platform fees paid</div></div>
+          <div class="metric" style="flex:1;"><div class="metric-val" style="color:var(--amber);">RM 3,600</div><div class="metric-lbl">Deposit on hold</div></div>
+        </div>
+        <table class="ticket-table">
+          <thead><tr><th>Date</th><th>Ref</th><th>Description</th><th>In</th><th>Out</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>14 May</td><td>#PAY-0231</td><td>Taman KJ May rent</td><td style="color:var(--green);">+RM 1,764</td><td>—</td><td><span class="status-badge status-new">Settled</span></td></tr>
+            <tr><td>10 May</td><td>#PAY-0228</td><td>Sri Ampang May rent</td><td style="color:var(--green);">+RM 931.50</td><td>—</td><td><span class="status-badge status-new">Settled</span></td></tr>
+            <tr><td>5 May</td><td>#PAY-0224</td><td>Toyota Hilux May rental</td><td style="color:var(--green);">+RM 2,058</td><td>—</td><td><span class="status-badge status-new">Settled</span></td></tr>
+            <tr><td>1 May</td><td>#PAY-0219</td><td>CKEYS platform fee</td><td>—</td><td style="color:var(--red);">-RM 141.90</td><td><span class="status-badge status-matched">Deducted</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Listings -->
+      <div id="dash-listings" style="display:none;">
+        <div class="dash-header"><h2>My listings</h2><button class="t-btn t-solid">+ Add listing</button></div>
+        <table class="ticket-table">
+          <thead><tr><th>Listing</th><th>Category</th><th>Price</th><th>Views</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Taman Kota Jaya 3BR House</td><td>Property</td><td>RM 1,800/mo</td><td>342</td><td><span class="status-badge status-paid">Rented</span></td></tr>
+            <tr><td>Sri Ampang Studio</td><td>Property</td><td>RM 950/mo</td><td>218</td><td><span class="status-badge status-paid">Rented</span></td></tr>
+            <tr><td>Toyota Hilux D/C 2022</td><td>Vehicle</td><td>RM 2,100/mo</td><td>89</td><td><span class="status-badge status-matched">Rented</span></td></tr>
+            <tr><td>Office lot Jalan Raja</td><td>Property</td><td>RM 3,500/mo</td><td>67</td><td><span class="status-badge status-new">Available</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Profile -->
+      <div id="dash-profile" style="display:none;">
+        <div class="dash-header"><h2>Profile & verification</h2></div>
+        <div style="max-width:480px;">
+          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px;">
+            <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
+              <div style="width:56px;height:56px;background:var(--bg4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600;">A</div>
+              <div><div style="font-size:16px;font-weight:600;color:var(--white);">Ahmad Ruzaini</div><div style="font-size:13px;color:var(--gray);">ahmad.ruzaini@email.com</div><div class="verified-badge" style="margin-top:4px;"><i class="ti ti-circle-check"></i>MyKad verified</div></div>
+            </div>
+            <div class="form-grp"><label>Full name</label><input type="text" value="Ahmad Ruzaini"/></div>
+            <div class="form-grp"><label>Phone</label><input type="tel" value="+60 12-345 6789"/></div>
+            <div class="form-grp"><label>Email</label><input type="email" value="ahmad.ruzaini@email.com"/></div>
+            <button class="t-btn t-solid" style="margin-top:8px;">Save changes</button>
+          </div>
+          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:24px;">
+            <div style="font-size:15px;font-weight:600;color:var(--white);margin-bottom:16px;">KYC verification</div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--bg3);border-radius:8px;"><span style="font-size:14px;color:var(--white);">MyKad (IC) upload</span><span class="status-badge status-new"><i class="ti ti-circle-check"></i>Verified</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--bg3);border-radius:8px;"><span style="font-size:14px;color:var(--white);">Phone number</span><span class="status-badge status-new"><i class="ti ti-circle-check"></i>Verified</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--bg3);border-radius:8px;"><span style="font-size:14px;color:var(--white);">Bank account</span><span class="status-badge status-matched">Pending</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================================================== -->
+<!-- AUTH PAGE -->
+<!-- ===================================================== -->
+<div class="page" id="page-auth">
+  <div class="auth-wrap">
+    <div class="auth-box">
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="authTab('login')">Sign in</button>
+        <button class="auth-tab" onclick="authTab('register')">Register</button>
+      </div>
+      <div class="auth-body" id="authBody">
+        <h2>Welcome back</h2>
+        <p>Sign in to your CKEYS account</p>
+        <div class="social-btn" onclick="socialLogin('Google')"><i class="ti ti-brand-google" style="font-size:18px;"></i>Continue with Google</div>
+        <div class="social-btn" onclick="socialLogin('Apple')"><i class="ti ti-brand-apple" style="font-size:18px;"></i>Continue with Apple</div>
+        <div class="auth-divider"><span>or with email</span></div>
+        <div class="form-grp"><label>Email address</label><input type="email" id="loginEmail" placeholder="you@email.com"/></div>
+        <div class="form-grp"><label>Password</label><input type="password" id="loginPw" placeholder="••••••••"/><div class="form-hint"><a style="color:var(--gray);cursor:pointer;">Forgot password?</a></div></div>
+        <button class="full-btn full-btn-white" onclick="doLogin()">Sign in</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+const propListings=[
+  {id:'p1',type:'home',title:'Taman Kota Jaya 3-Bedroom House',sub:'Fully furnished · Semi-D',area:'Kuantan, Pahang',price:1800,per:'month',owner:'Hj. Razak',tags:['Furnished','Air-cond','Parking','WiFi'],feats:[{v:'3',l:'Bedrooms'},{v:'2',l:'Bathrooms'},{v:'1,800',l:'sq ft'},{v:'1',l:'Parking'},{v:'RM 1,800',l:'Deposit'},{v:'12',l:'Min months'}],desc:'Well-maintained semi-detached house in quiet neighbourhood. Full kitchen, living room, 3 bedrooms. Near schools and shops. Owner stays nearby and is responsive.',img:'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=80',x:'22%',y:'44%'},
+  {id:'p2',type:'home',title:'Sri Ampang Studio Unit',sub:'Bachelor · Near LRT',area:'Ampang, Selangor',price:950,per:'month',owner:'Cik Rohani',tags:['Furnished','WiFi','Air-cond'],feats:[{v:'1',l:'Room'},{v:'1',l:'Bathroom'},{v:'480',l:'sq ft'},{v:'0',l:'Parking'},{v:'RM 950',l:'Deposit'},{v:'6',l:'Min months'}],desc:'Cozy studio unit perfect for working professionals. Fully furnished with washing machine. 5-minute walk to Ampang LRT.',img:'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&q=80',x:'44%',y:'38%'},
+  {id:'p3',type:'home',title:'Jalan Raja Chulan Office Lot',sub:'Commercial · 3rd floor',area:'KL City Centre',price:3500,per:'month',owner:'Syarikat Maju',tags:['Aircon','Pantry','High-speed WiFi','Lift'],feats:[{v:'1,200',l:'sq ft'},{v:'2',l:'Toilets'},{v:'2',l:'Carparks'},{v:'3rd',l:'Floor'},{v:'RM 7,000',l:'Deposit'},{v:'12',l:'Min months'}],desc:'Modern office space in the heart of KLCC. Ideal for small to medium businesses. Renovated with server room.',img:'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80',x:'43%',y:'37%'},
+  {id:'p4',type:'home',title:'Nilai Land Parcel 2 Acres',sub:'Agriculture land · Freehold',area:'Nilai, Negeri Sembilan',price:800,per:'month',owner:'En. Sufian',tags:['Water access','Road access','Flat land'],feats:[{v:'2',l:'Acres'},{v:'—',l:'Structure'},{v:'Yes',l:'Road access'},{v:'Yes',l:'Water'},{v:'RM 1,600',l:'Deposit'},{v:'12',l:'Min months'}],desc:'Flat agricultural land suitable for farming or temporary storage. Water and electricity available. Easy road access.',img:'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80',x:'39%',y:'43%'},
+];
+const vehListings=[
+  {id:'v1',type:'car',title:'Toyota Hilux D/Cab 2022',sub:'4WD · Automatic',area:'Kuantan, Pahang',price:2100,per:'month',owner:'Pak Daud',tags:['Auto','4WD','Full tank','GPS'],feats:[{v:'Hilux',l:'Model'},{v:'2022',l:'Year'},{v:'Auto',l:'Trans'},{v:'Diesel',l:'Fuel'},{v:'RM 2,100',l:'Deposit'},{v:'7',l:'Seats'}],desc:'Well-maintained Toyota Hilux. Perfect for construction sites or off-road use. Full service record. Comes with GPS tracker and full fuel.',img:'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=600&q=80',x:'23%',y:'45%'},
+  {id:'v2',type:'car',title:'Honda City 2021 — Daily rental',sub:'Sedan · Fuel efficient',area:'Petaling Jaya, Selangor',price:130,per:'day',owner:'Izzat Motors',tags:['Auto','Petrol','CDW included','Clean'],feats:[{v:'City',l:'Model'},{v:'2021',l:'Year'},{v:'Auto',l:'Trans'},{v:'Petrol',l:'Fuel'},{v:'RM 500',l:'Deposit'},{v:'5',l:'Seats'}],desc:'Fuel-efficient city car available for daily or weekly rental. Collision damage waiver included. Pickup at PJ Selatan.',img:'https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=600&q=80',x:'43%',y:'39%'},
+  {id:'v3',type:'car',title:'Toyota HiAce Van 16-seater',sub:'Passengers · Corporate',area:'Shah Alam, Selangor',price:350,per:'day',owner:'AZ Transport',tags:['Manual','Diesel','Air-cond','16 pax'],feats:[{v:'HiAce',l:'Model'},{v:'2020',l:'Year'},{v:'Manual',l:'Trans'},{v:'Diesel',l:'Fuel'},{v:'RM 700',l:'Deposit'},{v:'16',l:'Seats'}],desc:'Large passenger van for corporate trips, school runs or events. Professional driver available at extra cost.',img:'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=600&q=80',x:'40%',y:'37%'},
+];
+const toolListings=[
+  {id:'t1',type:'tool',title:'Kubota Mini Excavator',sub:'Construction · Heavy duty',area:'Klang, Selangor',price:450,per:'day',owner:'Borhan Equipment',tags:['Certified op.','Trailer included','Diesel'],feats:[{v:'1.5T',l:'Weight'},{v:'Kubota',l:'Brand'},{v:'2020',l:'Year'},{v:'Yes',l:'Operator'},{v:'RM 2,000',l:'Deposit'},{v:'1',l:'Min days'}],desc:'Compact excavator suitable for trenching, landscaping and small demolition. Certified operator available. Trailer delivery to site.',img:'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=80',x:'42%',y:'42%'},
+  {id:'t2',type:'tool',title:'Concrete Mixer 350L — daily',sub:'Construction · Portable',area:'Kuala Lumpur',price:80,per:'day',owner:'En. Hairul',tags:['Electric','350L','Self-loading'],feats:[{v:'350L',l:'Capacity'},{v:'Electric',l:'Power'},{v:'220kg',l:'Weight'},{v:'Yes',l:'Delivery'},{v:'RM 200',l:'Deposit'},{v:'1',l:'Min days'}],desc:'Heavy-duty concrete mixer. Self-loading drum. Electric powered. Available for daily or weekly hire. Delivery to Klang Valley.',img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80',x:'44%',y:'38%'},
+  {id:'t3',type:'tool',title:'Scaffolding Set — 100 frames',sub:'Construction · Aluminium',area:'Petaling Jaya, Selangor',price:600,per:'week',owner:'Rapid Scaffold',tags:['100 frames','Boards included','Delivery'],feats:[{v:'100',l:'Frames'},{v:'Aluminium',l:'Material'},{v:'Yes',l:'Boards'},{v:'Yes',l:'Delivery'},{v:'RM 1,200',l:'Deposit'},{v:'1',l:'Min weeks'}],desc:'Complete aluminium scaffolding set with boards and base plates. Suitable for 3-storey buildings. Setup and delivery included.',img:'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&q=80',x:'41%',y:'38%'},
+];
+const svcListings=[
+  {id:'s1',type:'service',title:'Electrician — Wiring & Installation',sub:'Licensed · Residential & commercial',area:'Kuantan, Pahang',price:80,per:'hour',owner:'Fairus Electric',tags:['Licensed','Residential','Commercial','Emergency'],feats:[{v:'JKR',l:'Licensed'},{v:'15yr',l:'Experience'},{v:'2hr',l:'Min call'},{v:'Yes',l:'Emergency'},{v:'—',l:'Deposit'},{v:'Paid after',l:'Billing'}],desc:'Licensed electrician for all residential and commercial electrical work. Wiring, distribution boards, meter boxes. Emergency response available.',img:'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600&q=80',x:'24%',y:'44%'},
+  {id:'s2',type:'service',title:'House Cleaning — Full service',sub:'6-8 hours · Deep clean',area:'Kuala Lumpur & PJ',price:250,per:'session',owner:'CleanPro KL',tags:['Supplies included','Bonded','Deep clean','After renovation'],feats:[{v:'6-8',l:'Hours'},{v:'2',l:'Cleaners'},{v:'Yes',l:'Supplies'},{v:'Yes',l:'Bonded'},{v:'RM 100',l:'Deposit'},{v:'Book 2 days',l:'ahead'}],desc:'Professional house cleaning team. All supplies and equipment included. Specialise in post-renovation cleaning and regular monthly service.',img:'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&q=80',x:'44%',y:'38%'},
+  {id:'s3',type:'service',title:'Plumbing — Leak & pipe repairs',sub:'Licensed · Fast response',area:'Shah Alam & Klang',price:60,per:'hour',owner:'Paip Master',tags:['Licensed','Emergency','Parts included','SPAN certified'],feats:[{v:'SPAN',l:'Certified'},{v:'10yr',l:'Experience'},{v:'1hr',l:'Response'},{v:'Yes',l:'Parts'},{v:'—',l:'Deposit'},{v:'After job',l:'Billing'}],desc:'Certified plumber for pipe leaks, water heater installation, toilet repairs and water pump problems. Available 7 days.',img:'https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=600&q=80',x:'40%',y:'40%'},
+  {id:'s4',type:'service',title:'Grass cutting & landscaping',sub:'Monthly package available',area:'Kuantan, Pahang',price:150,per:'session',owner:'Hijau Landscape',tags:['Monthly package','Fertilise','Trimming','Weed removal'],feats:[{v:'Half day',l:'Duration'},{v:'2',l:'Workers'},{v:'Yes',l:'Equipment'},{v:'Yes',l:'Monthly'},{v:'—',l:'Deposit'},{v:'After job',l:'Billing'}],desc:'Professional lawn care and landscaping. Grass cutting, edging, fertilising and weed removal. Monthly maintenance packages available.',img:'https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?w=600&q=80',x:'23%',y:'45%'},
+];
+
+const allListings=[...propListings,...vehListings,...toolListings,...svcListings];
+
+const demandData=[
+  {name:'Azman H.',sub:'Verified · Matched',type:'home',title:'Looking for 3BR house, Kuantan area',budget:'RM 1,500–2,000/mo',loc:'Kuantan',date:'Jun 1',cycle:'Monthly',tags:['Furnished','Parking','Pet-friendly']},
+  {name:'Nurul A.',sub:'Verified · New',type:'home',title:'Studio or 1BR near LRT, KL',budget:'RM 800–1,200/mo',loc:'Kuala Lumpur',date:'ASAP',cycle:'Monthly',tags:['WiFi','Air-cond']},
+  {name:'Farid M.',sub:'Verified · New',type:'car',title:'Need pickup truck, 2 weeks',budget:'RM 2,000–3,000',loc:'Pahang',date:'Jun 10',cycle:'Weekly',tags:['4WD','Auto']},
+  {name:'Contractors KJ',sub:'Business · New',type:'tool',title:'Excavator needed 3 days',budget:'RM 1,200–1,500',loc:'KL',date:'Jun 5',cycle:'Daily',tags:['With op.','Klang Valley']},
+  {name:'Puan Siti',sub:'Verified · New',type:'service',title:'House cleaning after renovation',budget:'RM 400–600',loc:'PJ',date:'Jun 8',cycle:'One-time',tags:['Deep clean','Full house']},
+  {name:'Ahmad R.',sub:'Verified · New',type:'home',title:'Office space 800-1200sqft KL',budget:'RM 2,500–4,000/mo',loc:'KL City',date:'Jul 1',cycle:'Monthly',tags:['WiFi','Parking','Aircon']},
+];
+
+let currentPage='home';
+let prevListingPage='property';
+let selectedListing=null;
+let selectedPM='fpx';
+let selectedBank='';
+let currentMapFilter='all';
+
+// ===== NAVIGATION =====
+function nav(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('.topbar-nav a').forEach(a=>a.classList.remove('active'));
+  const tnav=document.getElementById('tnav-'+page);
+  if(tnav) tnav.classList.add('active');
+  window.scrollTo(0,0);
+  currentPage=page;
+  if(page==='property'){renderListings('prop');prevListingPage='property';}
+  if(page==='vehicle'){renderListings('veh');prevListingPage='vehicle';}
+  if(page==='tools'){renderListings('tool');prevListingPage='tools';}
+  if(page==='services'){renderListings('svc');prevListingPage='services';}
+  if(page==='map'){renderMap();}
+  if(page==='board'){renderBoard(null);}
+  if(page==='payment'){setupPayment();}
+}
+function goBack(){nav(prevListingPage||'home');}
+function openSidebar(){document.getElementById('sidebarWrap').classList.add('on');}
+function closeSidebar(){document.getElementById('sidebarWrap').classList.remove('on');}
+function chipSelect(el,group,val){
+  const parent=el.closest('.listing-filters,.board-controls,.map-controls');
+  if(parent) parent.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+}
+function toggleTag(el){el.classList.toggle('on');}
+function authTab(t){
+  document.querySelectorAll('.auth-tab').forEach(a=>a.classList.remove('active'));
+  event.target.classList.add('active');
+  if(t==='login'){document.getElementById('authBody').innerHTML=`<h2>Welcome back</h2><p>Sign in to your CKEYS account</p><div class="social-btn" onclick="socialLogin('Google')"><i class="ti ti-brand-google" style="font-size:18px;"></i>Continue with Google</div><div class="auth-divider"><span>or with email</span></div><div class="form-grp"><label>Email address</label><input type="email" placeholder="you@email.com"/></div><div class="form-grp"><label>Password</label><input type="password" placeholder="••••••••"/></div><button class="full-btn full-btn-white" onclick="doLogin()">Sign in</button>`;}
+  else{document.getElementById('authBody').innerHTML=`<h2>Create account</h2><p>Join CKEYS as owner or tenant</p><div class="form-grp"><label>Full name</label><input type="text" placeholder="Ahmad bin Ali"/></div><div class="form-grp"><label>Email address</label><input type="email" placeholder="you@email.com"/></div><div class="form-grp"><label>Password</label><input type="password" placeholder="Min 8 characters"/></div><div class="form-grp"><label>I am a</label><select><option>Tenant / Looking to rent</option><option>Owner / Have assets to rent</option><option>Service worker</option><option>Both</option></select></div><button class="full-btn full-btn-white" onclick="doRegister()">Create account</button><p style="font-size:12px;color:var(--gray2);text-align:center;margin-top:16px;">By registering you agree to our Terms of Use and Privacy Policy</p>`;}
+}
+function doLogin(){toast('Signed in successfully','ok');setTimeout(()=>nav('dashboard'),600);}
+function doRegister(){toast('Account created! Please verify your email.','ok');setTimeout(()=>nav('dashboard'),800);}
+function socialLogin(p){toast('Connecting with '+p+'...','ok');setTimeout(()=>nav('dashboard'),800);}
+function dashTab(t,el){
+  document.querySelectorAll('.dash-nav-item').forEach(d=>d.classList.remove('active'));
+  if(el) el.classList.add('active');
+  ['overview','contracts','payments','listings','profile'].forEach(s=>{
+    const el2=document.getElementById('dash-'+s);
+    if(el2) el2.style.display=s===t?'block':'none';
+  });
+}
+
+// ===== RENDER LISTING CARDS =====
+function renderListings(prefix){
+  const map={prop:{listings:propListings,grid:'propGrid',badge:'prop',demands:'propDemandRow'},veh:{listings:vehListings,grid:'vehGrid',badge:'veh',demands:'vehDemandRow'},tool:{listings:toolListings,grid:'toolGrid',badge:'tool',demands:'toolDemandRow'},svc:{listings:svcListings,grid:'svcGrid',badge:'svc',demands:'svcDemandRow'}};
+  const m=map[prefix];
+  const grid=document.getElementById(m.grid);
+  if(!grid) return;
+  grid.innerHTML='';
+  m.listings.forEach(l=>{
+    const el=document.createElement('div');
+    el.className='lcard';
+    el.id='lc-'+l.id;
+    const imgHtml=l.img?`<img src="${l.img}" alt="${l.title}" loading="lazy"/>`:`<div class="lcard-photo-placeholder"><i class="ti ti-photo"></i></div>`;
+    el.innerHTML=`
+      <div class="lcard-photo">
+        ${imgHtml}
+        <span class="lcard-photo-badge badge-${m.badge}">${prefix==='prop'?'Property':prefix==='veh'?'Vehicle':prefix==='tool'?'Tool':'Service'}</span>
+      </div>
+      <div class="lcard-body">
+        <div>
+          <div class="lcard-top">
+            <div><div class="lcard-title">${l.title}</div><div class="lcard-sub">${l.sub}</div></div>
+            <div style="text-align:right;"><div class="lcard-price">RM ${l.price.toLocaleString()}</div><div class="lcard-price-per">/ ${l.per}</div></div>
+          </div>
+          <div class="lcard-meta">
+            <div class="lcard-meta-item"><i class="ti ti-map-pin"></i>${l.area}</div>
+            <div class="lcard-meta-item"><i class="ti ti-circle-check" style="color:var(--green);"></i>Verified</div>
+            <div class="lcard-meta-item"><i class="ti ti-user"></i>${l.owner}</div>
+          </div>
+          <div class="lcard-tags">${l.tags.map(t=>`<span class="lcard-tag">${t}</span>`).join('')}</div>
+        </div>
+        <div class="lcard-actions">
+          <button class="lcard-btn lcard-btn-primary" onclick="openDetail('${l.id}');event.stopPropagation();">Book now</button>
+          <button class="lcard-btn lcard-btn-ghost" onclick="openDetail('${l.id}');event.stopPropagation();">More details →</button>
+        </div>
+      </div>`;
+    el.onclick=()=>openDetail(l.id);
+    grid.appendChild(el);
+  });
+
+  // Demand row
+  const drow=document.getElementById(m.demands);
+  if(drow){
+    const typeFilter={prop:'home',veh:'car',tool:'tool',svc:'service'}[prefix];
+    drow.innerHTML='';
+    demandData.filter(d=>d.type===typeFilter).forEach(d=>{
+      const el=document.createElement('div');
+      el.className='mini-demand';
+      el.innerHTML=`<div class="mini-demand-name">${d.name}</div><div class="mini-demand-loc"><i class="ti ti-map-pin" style="font-size:12px;"></i>${d.loc}</div><div class="mini-demand-budget">${d.budget}</div><div style="font-size:11px;color:var(--gray);margin-top:3px;">${d.date} · ${d.cycle}</div><div class="mini-demand-tags">${d.tags.map(t=>`<span class="mini-demand-tag">${t}</span>`).join('')}</div>`;
+      el.onclick=()=>toast('Demand card: '+d.title,'ok');
+      drow.appendChild(el);
+    });
+    // Add "post yours" card
+    const post=document.createElement('div');
+    post.className='mini-demand';
+    post.style='border-style:dashed;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;cursor:pointer;';
+    post.innerHTML=`<i class="ti ti-plus" style="font-size:24px;color:var(--gray2);"></i><div style="font-size:12px;color:var(--gray);">Post your request</div>`;
+    post.onclick=()=>nav('request');
+    drow.appendChild(post);
+  }
+}
+
+// ===== OPEN DETAIL PAGE =====
+function openDetail(id){
+  const l=allListings.find(x=>x.id===id);
+  if(!l) return;
+  selectedListing=l;
+  // Badge
+  const badgeMap={home:['badge-full-prop','Property'],car:['badge-full-veh','Vehicle'],tool:['badge-full-tool','Tool'],service:['badge-full-svc','Service']};
+  const [bc,bt]=badgeMap[l.type]||['',''];
+  document.getElementById('detailBadge').className='detail-type-badge '+bc;
+  document.getElementById('detailBadge').innerHTML=`<i class="ti ti-${l.type==='home'?'home-2':l.type==='car'?'car':l.type==='tool'?'tool':'briefcase'}"></i>${bt}`;
+  document.getElementById('detailTitle').textContent=l.title;
+  document.getElementById('detailLocation').innerHTML=`<i class="ti ti-map-pin"></i>${l.area}`;
+  // Photo
+  const pm=document.getElementById('detailPhotoMain');
+  pm.innerHTML=l.img?`<img src="${l.img}" alt="${l.title}" style="width:100%;height:100%;object-fit:cover;"/>`:`<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;color:var(--border2);"><i class="ti ti-photo"></i></div>`;
+  // Features
+  document.getElementById('detailFeatures').innerHTML=l.feats.map(f=>`<div class="detail-feat"><div class="detail-feat-val">${f.v}</div><div class="detail-feat-lbl">${f.l}</div></div>`).join('');
+  document.getElementById('detailDesc').textContent=l.desc;
+  document.getElementById('detailTags').innerHTML=l.tags.map(t=>`<span class="detail-tag">${t}</span>`).join('');
+  // Owner
+  document.getElementById('detailOwnerAvatar').textContent=l.owner[0];
+  document.getElementById('detailOwnerName').textContent=l.owner;
+  // Sidebar price
+  document.getElementById('detailPriceSide').textContent=`RM ${l.price.toLocaleString()}`;
+  document.getElementById('detailPricePer').textContent=`per ${l.per}`;
+  document.getElementById('detailCalcLabel').textContent=l.per==='month'?'Duration (months)':l.per==='day'?'Duration (days)':'Duration (weeks)';
+  document.getElementById('detailDuration').value=l.per==='month'?3:7;
+  recalcDetail();
+  nav('detail');
+}
+function recalcDetail(){
+  if(!selectedListing) return;
+  const dur=parseFloat(document.getElementById('detailDuration').value)||1;
+  const dep=parseFloat(document.getElementById('detailDeposit').value)||1;
+  const rate=selectedListing.price;
+  const rental=rate*dur;
+  const deposit=rate*dep;
+  const fee=rental*0.03;
+  const total=rental+deposit+fee;
+  document.getElementById('bdRental').textContent=`RM ${rental.toLocaleString('en-MY',{minimumFractionDigits:0})}`;
+  document.getElementById('bdDeposit').textContent=`RM ${deposit.toLocaleString('en-MY',{minimumFractionDigits:0})}`;
+  document.getElementById('bdFee').textContent=`RM ${Math.round(fee).toLocaleString('en-MY')}`;
+  document.getElementById('bdTotal').textContent=`RM ${Math.round(total).toLocaleString('en-MY')}`;
+}
+function bookNow(){
+  if(selectedListing){
+    setupPayment();
+    nav('payment');
+  }
+}
+function setupPayment(){
+  if(!selectedListing) return;
+  const l=selectedListing;
+  const dur=parseFloat(document.getElementById('detailDuration')?.value)||3;
+  const dep=parseFloat(document.getElementById('detailDeposit')?.value)||1;
+  const rental=l.price*dur;
+  const deposit=l.price*dep;
+  const fee=rental*0.03;
+  const total=rental+deposit+fee;
+  const payL=document.getElementById('payListing');
+  if(payL) payL.textContent=l.title;
+  const payD=document.getElementById('payDuration');
+  if(payD) payD.textContent=dur+' '+l.per+(dur>1?'s':'');
+  const payR=document.getElementById('payRate');
+  if(payR) payR.textContent=`RM ${l.price.toLocaleString()} / ${l.per}`;
+  const payDep=document.getElementById('payDeposit');
+  if(payDep) payDep.textContent=`RM ${deposit.toLocaleString()}`;
+  const payFee=document.getElementById('payFee');
+  if(payFee) payFee.textContent=`RM ${Math.round(fee).toLocaleString()}`;
+  const payTot=document.getElementById('payTotal');
+  if(payTot) payTot.textContent=`RM ${Math.round(total).toLocaleString()}`;
+  document.getElementById('payContent').style.display='block';
+  document.getElementById('payDone').style.display='none';
+  const btn=document.getElementById('payBtn');
+  if(btn){btn.disabled=false;btn.textContent='Confirm & pay';}
+}
+
+// ===== MAP =====
+function renderMap(){
+  const mapList=document.getElementById('mapList');
+  mapList.innerHTML='';
+  const pins=document.getElementById('mapPins');
+  pins.innerHTML='';
+  allListings.forEach(l=>{
+    // List card
+    const el=document.createElement('div');
+    el.className='map-lcard';
+    el.id='mlc-'+l.id;
+    const tc={home:'prop',car:'veh',tool:'tool',service:'svc'}[l.type]||'prop';
+    const imgHtml=l.img?`<img src="${l.img}" alt="${l.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;"/>`:`<i class="ti ti-photo"></i>`;
+    el.innerHTML=`<div class="map-lcard-photo">${imgHtml}</div><div class="map-lcard-body"><div class="map-lcard-title">${l.title}</div><div class="map-lcard-meta"><span class="lcard-photo-badge badge-${tc}" style="font-size:9px;padding:1px 6px;">${tc.toUpperCase()}</span>${l.area}</div><div class="map-lcard-price">RM ${l.price.toLocaleString()} / ${l.per}</div></div>`;
+    el.onclick=()=>selectMapListing(l.id);
+    mapList.appendChild(el);
+    // Pin
+    const pin=document.createElement('div');
+    pin.className='pin '+tc+'-pin';
+    pin.id='mpin-'+l.id;
+    pin.style.left=l.x;pin.style.top=l.y;
+    pin.innerHTML=`<div class="pin-dot"><i class="ti ti-${l.type==='home'?'home-2':l.type==='car'?'car':l.type==='tool'?'tool':'briefcase'}" style="font-size:13px;color:#000;transform:rotate(45deg);"></i></div>`;
+    pin.onclick=()=>selectMapListing(l.id);
+    pins.appendChild(pin);
+  });
+}
+function selectMapListing(id){
+  const l=allListings.find(x=>x.id===id);
+  if(!l) return;
+  document.querySelectorAll('.map-lcard').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('.pin').forEach(p=>p.classList.remove('active'));
+  const lc=document.getElementById('mlc-'+id);
+  const pin=document.getElementById('mpin-'+id);
+  if(lc){lc.classList.add('selected');lc.scrollIntoView({block:'nearest'});}
+  if(pin) pin.classList.add('active');
+  const popup=document.getElementById('mapPopup');
+  document.getElementById('popTitle').textContent=l.title;
+  document.getElementById('popMeta').textContent=l.area+' · '+l.type;
+  document.getElementById('popPrice').textContent=`RM ${l.price.toLocaleString()} / ${l.per}`;
+  popup.style.left=(parseFloat(l.x)+4)+'%';
+  popup.style.top=(parseFloat(l.y)-2)+'%';
+  popup.classList.add('show');
+  selectedListing=l;
+}
+function openDetailFromMap(){
+  if(selectedListing) openDetail(selectedListing.id);
+}
+function filterMap(el,type){
+  document.querySelectorAll('.map-controls .filter-chip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('mapPopup').classList.remove('show');
+  const typeMap={home:'home',car:'car',tool:'tool',service:'service'};
+  document.querySelectorAll('#mapPins .pin').forEach(p=>{
+    const isMatch=type==='all'||p.className.includes(type==='home'?'prop':type==='car'?'veh':type==='tool'?'tool':'svc');
+    p.style.display=isMatch?'block':'none';
+  });
+  document.querySelectorAll('#mapList .map-lcard').forEach((c,i)=>{
+    const l=allListings[i];
+    if(!l) return;
+    const show=type==='all'||l.type===type;
+    c.style.display=show?'flex':'none';
+  });
+}
+
+// ===== DEMAND BOARD =====
+function renderBoard(filter){
+  const grid=document.getElementById('demandGrid');
+  if(!grid) return;
+  const filtered=filter?demandData.filter(d=>d.type===filter):demandData;
+  grid.innerHTML='';
+  filtered.forEach(d=>{
+    const el=document.createElement('div');
+    el.className='demand-card';
+    const tIcon={home:'home-2',car:'car',tool:'tool',service:'briefcase'}[d.type]||'tag';
+    const tColor={home:'var(--prop)',car:'var(--veh)',tool:'var(--tool)',service:'var(--svc)'}[d.type]||'var(--gray)';
+    el.innerHTML=`<div class="dc-head"><div><div class="dc-name">${d.name}</div><div class="dc-sub"><i class="ti ti-${tIcon}" style="color:${tColor};font-size:12px;margin-right:4px;"></i>${d.sub}</div></div><div class="dc-budget">${d.budget}</div></div><div style="font-size:14px;color:var(--white);font-weight:500;margin-bottom:12px;">${d.title}</div><div class="dc-metas"><div class="dc-meta"><i class="ti ti-map-pin"></i>${d.loc}</div><div class="dc-meta"><i class="ti ti-calendar"></i>${d.date}</div><div class="dc-meta"><i class="ti ti-repeat"></i>${d.cycle}</div></div><div class="dc-tags">${d.tags.map(t=>`<span class="dc-tag">${t}</span>`).join('')}</div><div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);display:flex;gap:8px;"><button class="lcard-btn lcard-btn-primary" style="font-size:12px;padding:6px 14px;" onclick="toast('Contacting '+d.name+'...','ok');event.stopPropagation()">Respond</button><button class="lcard-btn lcard-btn-ghost" style="font-size:12px;padding:6px 14px;">View details</button></div>`;
+    grid.appendChild(el);
+  });
+  if(filtered.length===0){grid.innerHTML='<div style="color:var(--gray);font-size:14px;grid-column:1/-1;padding:24px;">No requests found for this category.</div>';}
+}
+
+// ===== PAYMENT =====
+function selectPM(pm){
+  selectedPM=pm;
+  document.querySelectorAll('.pay-method').forEach(m=>m.classList.remove('on'));
+  document.getElementById('pm-'+pm).classList.add('on');
+  const fpx=document.getElementById('fpxSection');
+  if(fpx) fpx.style.display=pm==='fpx'?'block':'none';
+}
+function selectBank(el){
+  document.querySelectorAll('.bank-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  selectedBank=el.textContent;
+}
+function processPayment(){
+  if(selectedPM==='fpx'&&!selectedBank){toast('Please select your bank','err');return;}
+  const btn=document.getElementById('payBtn');
+  if(btn){btn.disabled=true;btn.innerHTML='<span class="spin"></span> Processing...';}
+  setTimeout(()=>{
+    document.getElementById('payContent').style.display='none';
+    document.getElementById('payDone').style.display='block';
+    toast('Payment confirmed! Contract being generated.','ok');
+  },2200);
+}
+
+// ===== REQUEST SUBMIT =====
+function submitRequest(){
+  const name=document.getElementById('rName').value;
+  const email=document.getElementById('rEmail').value;
+  const loc=document.getElementById('rLoc').value;
+  if(!name.trim()){toast('Please enter your name','err');return;}
+  if(!email.trim()){toast('Please enter your email','err');return;}
+  if(!loc.trim()){toast('Please enter a location','err');return;}
+  const btn=document.getElementById('submitBtnLabel');
+  btn.innerHTML='<span class="spin"></span> Submitting...';
+  setTimeout(()=>{
+    toast('Demand ticket posted! Owners will reach out.','ok');
+    btn.textContent='Submit demand ticket';
+    nav('board');
+  },1400);
+}
+
+// ===== TOAST =====
+function toast(msg,type='ok'){
+  const wrap=document.getElementById('toastWrap');
+  const t=document.createElement('div');
+  t.className='toast toast-'+type;
+  t.innerHTML=`<i class="ti ti-${type==='ok'?'circle-check':'alert-circle'}"></i>${msg}`;
+  wrap.appendChild(t);
+  requestAnimationFrame(()=>{setTimeout(()=>t.classList.add('show'),10);});
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),400);},3200);
+}
+
+// Init
+renderMap();
+renderBoard(null);
+</script>
+</body>
+</html>
